@@ -11,23 +11,35 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
   <style>
     :root {
-      color-scheme: light dark;
+      color-scheme: light;
       --bg: #f2f5f4; --surface: #ffffff; --surface-2: #f7f9f8; --surface-3: #edf2f0;
       --ink: #17211e; --muted: #65726e; --line: #dbe3e0;
       --teal: #087f6d; --teal-deep: #075f53; --teal-pale: #dff2ed;
       --coral: #dc563e; --coral-pale: #fbe8e4; --amber: #9a6500; --amber-pale: #fff1cf;
       --blue: #22649b; --blue-pale: #e4f0fa; --violet: #6b4fa8; --violet-pale: #efe9fa;
-      --shadow-sm: 0 4px 16px rgba(28, 52, 45, .07);
+      --shadow-sm: 0 4px 16px rgba(28, 52, 45, .07); --on-primary: #ffffff;
     }
     @media (prefers-color-scheme: dark) {
-      :root {
+      :root:not([data-theme="light"]) {
         --bg: #0f1614; --surface: #17201d; --surface-2: #1c2723; --surface-3: #26332f;
         --ink: #f0f5f3; --muted: #9daaa6; --line: #34433e;
         --teal: #55c7af; --teal-deep: #8edbc9; --teal-pale: #153d34;
         --coral: #ff8d76; --coral-pale: #45241f; --amber: #f2bf55; --amber-pale: #3e321b;
         --blue: #75b2e4; --blue-pale: #1d3446; --violet: #b9a2ea; --violet-pale: #2e2640;
         --shadow-sm: 0 4px 16px rgba(0, 0, 0, .18);
+        --on-primary: #10241e;
+        color-scheme: dark;
       }
+    }
+    :root[data-theme="dark"] {
+        --bg: #0f1614; --surface: #17201d; --surface-2: #1c2723; --surface-3: #26332f;
+        --ink: #f0f5f3; --muted: #9daaa6; --line: #34433e;
+        --teal: #55c7af; --teal-deep: #8edbc9; --teal-pale: #153d34;
+        --coral: #ff8d76; --coral-pale: #45241f; --amber: #f2bf55; --amber-pale: #3e321b;
+        --blue: #75b2e4; --blue-pale: #1d3446; --violet: #b9a2ea; --violet-pale: #2e2640;
+        --shadow-sm: 0 4px 16px rgba(0, 0, 0, .18);
+        --on-primary: #10241e;
+        color-scheme: dark;
     }
     * { box-sizing: border-box; }
     html { min-width: 320px; background: var(--bg); }
@@ -65,9 +77,8 @@
     .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
     .ghost-btn, .primary-btn, .danger-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; border-radius: 8px; padding: 0 14px; cursor: pointer; font-weight: 700; white-space: nowrap; }
     .ghost-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
-    .primary-btn { border: 1px solid var(--teal-deep); background: var(--teal-deep); color: #fff; box-shadow: var(--shadow-sm); }
+    .primary-btn { border: 1px solid var(--teal-deep); background: var(--teal-deep); color: var(--on-primary); box-shadow: var(--shadow-sm); }
     .danger-btn { border: 1px solid var(--line); background: var(--surface); color: var(--coral); }
-    @media (prefers-color-scheme: dark) { .primary-btn { color: #10241e; } }
     .ghost-btn:hover, .danger-btn:hover { border-color: var(--teal); }
     .primary-btn:hover { filter: brightness(.95); }
     button:disabled { opacity: .55; cursor: not-allowed; }
@@ -238,6 +249,7 @@
     .runner-foot { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 16px 22px; background: var(--surface-2); }
     .runner-foot p { margin: 0; color: var(--muted); font-size: 11px; }
     .ticket-card { width: min(560px, 100%); }
+    .output-text { width: 100%; height: min(52vh, 420px); resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: var(--surface-2); color: var(--ink); font: 500 11px/1.5 "IBM Plex Mono", ui-monospace, monospace; }
     .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 40; padding: 10px 16px; border-radius: 10px; background: #102c27; color: #e8f4f0; font-size: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s; max-width: calc(100% - 32px); }
     .toast.show { opacity: 1; }
 
@@ -470,6 +482,18 @@
         </dl>
         <div class="rationale"><b>Rules</b><p>Dates are ISO (YYYY-MM-DD). Stalled lab: pending, no result, ordered &gt; 7 days ago. Unfilled prescription: ordered, not filled, &gt; 3 days (high after 7). Overdue follow-up: a completed note says "follow up in N weeks" (digits or one–twelve), that date has passed, and there is no scheduled appointment today or later. Unanswered message: unread, received &gt; 1 day ago. Extra columns are ignored. A single <span class="mono">clinic.json</span> holding all five tables also works.</p></div>
       </div>
+    </div>
+  </div>
+
+  <!-- OUTPUT MODAL (shared view: downloads are blocked, so results are shown for copying) -->
+  <div class="overlay" id="outputModal" role="dialog" aria-modal="true" aria-labelledby="outputTitle">
+    <div class="runner-card ticket-card">
+      <div class="runner-head"><div><h2 id="outputTitle">Results</h2><p>Downloads are turned off in this shared view. Copy the text and save it as a file.</p></div><button class="close" data-close="outputModal" aria-label="Close">×</button></div>
+      <div class="detail-body" style="border-top:0">
+        <div class="filters" id="outputTabs" style="padding:0 0 12px"></div>
+        <textarea class="output-text" id="outputText" readonly spellcheck="false" aria-label="File contents"></textarea>
+      </div>
+      <div class="runner-foot"><p id="outputFoot"></p><button class="primary-btn" id="copyOutput">Copy</button></div>
     </div>
   </div>
 
@@ -1369,10 +1393,25 @@ naming patients and why. next_actions: up to 5 concrete actions with the owning 
 
     // ------------------------------------------------------------ helpers
     function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2600); }
+    const SHARED = !!window.CARE_SHARED_PREVIEW;
     function download(name, text, type) {
+      if (SHARED) { showOutput(name, text); return; }
       const url = URL.createObjectURL(new Blob([text], { type: type || "application/json" }));
       const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+    function showOutput(name, text) {
+      const names = OUTPUTS.map(o => o[0]).concat(Object.keys(C.TABLES).map(t => `${t}.json`));
+      $("outputTitle").textContent = name;
+      $("outputText").value = text;
+      $("outputFoot").textContent = `${text.length.toLocaleString()} characters`;
+      $("outputTabs").innerHTML = names.map(n => `<button class="filter${n === name ? " active" : ""}" data-out="${esc(n)}">${esc(n)}</button>`).join("");
+      $("outputModal").classList.add("open");
+    }
+    function outputText(name) {
+      const o = OUTPUTS.find(x => x[0] === name);
+      if (o) return o[1]();
+      return JSON.stringify(app.state.data[name.replace(/\.json$/, "")] || [], null, 2);
     }
     function initials(name) { return String(name || "?").split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase(); }
     function shortName(name) { const p = String(name || "").split(/\s+/); return p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : name; }
@@ -1412,6 +1451,7 @@ naming patients and why. next_actions: up to 5 concrete actions with the owning 
       $("modeTitle").textContent = claude ? "Claude + guardrails" : "Rule-based mode";
       $("modeText").textContent = claude ? `${app.model} triages messages; the urgent-phrase override and rule fallback run every cycle.` : "No API key set. Deterministic triage with the urgent-phrase override.";
       $("aiBadge").textContent = claude ? "Claude on" : "rules only";
+      if (SHARED) return;
       const ks = $("keyStatus");
       ks.className = "status-line" + (app.apiKey ? " ok" : "");
       if (!app.apiKey) ks.textContent = "No key set. The agent will use rule-based triage.";
@@ -1679,8 +1719,15 @@ naming patients and why. next_actions: up to 5 concrete actions with the owning 
         download(`${t}.${csv ? "csv" : "json"}`, csv ? C.toCSV(app.state.data[t], C.TABLES[t]) : JSON.stringify(app.state.data[t], null, 2), csv ? "text/csv" : "application/json"); }
     });
     $("dlAudit").addEventListener("click", () => { const [n, f, t] = OUTPUTS[1]; download(n, f(), t); });
+    $("outputTabs").addEventListener("click", e => { const b = e.target.closest("[data-out]"); if (b) showOutput(b.dataset.out, outputText(b.dataset.out)); });
+    $("copyOutput").addEventListener("click", () => {
+      const ta = $("outputText");
+      const fallback = () => { ta.focus(); ta.select(); toast("Text selected. Press Ctrl+C (or Cmd+C) to copy."); };
+      try { navigator.clipboard.writeText(ta.value).then(() => toast("Copied."), fallback); } catch { fallback(); }
+    });
     $("downloadAllTop").addEventListener("click", () => {
       if (!app.state.lastReport) { toast("Run a cycle first."); return; }
+      if (SHARED) { showOutput("agent_report.json", outputText("agent_report.json")); return; }
       OUTPUTS.slice(0, 3).forEach(([n, f, t], i) => setTimeout(() => download(n, f(), t), i * 300));
     });
 
@@ -1732,7 +1779,14 @@ naming patients and why. next_actions: up to 5 concrete actions with the owning 
       app.apiKey = cfg.apiKey.trim();
       delete window.CARE_TRACKER_CONFIG;
     }
+    if (SHARED) {
+      app.apiKey = "";
+      ["apiKey", "saveKey", "testKey", "useClaude", "clearKey", "modelName"].forEach(id => { $(id).disabled = true; });
+      $("apiKey").placeholder = "Not available in this shared view";
+      $("flowNote").textContent = "Shared demo view. Everything runs in your browser on synthetic data; Claude is turned off here.";
+    }
     setClinic(C.demoClinic(), "Demo clinic", [], {});
+    if (SHARED) $("keyStatus").textContent = "This shared view runs the rule-based agent. To use Claude, open index.html from the project in your own browser and add an API key there.";
     if (app.apiKey) $("keyStatus").textContent = `Key loaded from config.local.js (…${app.apiKey.slice(-4)}). The agent will call ${app.model}.`;
   })();
   </script>
