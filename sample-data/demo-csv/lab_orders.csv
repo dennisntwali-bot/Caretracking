@@ -1,0 +1,8 @@
+id,patient_id,test,ordered_date,result_date,status
+L001,P001,"Hormone panel (FSH, LH, estradiol)",2026-09-22,,pending
+L002,P003,Glucose challenge test,2026-09-15,,pending
+L003,P004,AMH,2026-09-20,2026-09-24,resulted
+L004,P006,HbA1c,2026-09-26,,pending
+L005,P009,CBC,2026-09-10,,pending
+L006,P007,DEXA scan,2026-09-24,,pending
+L007,P010,Pap smear / HPV co-test,2026-09-02,2026-09-09,resulted

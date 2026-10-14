@@ -1,0 +1,2316 @@
+{
+ "patients": [
+  {
+   "id": "P001",
+   "name": "Bianca Novak",
+   "age": 29,
+   "condition": "PCOS",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P002",
+   "name": "Esi Patel",
+   "age": 39,
+   "condition": "endometriosis",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P003",
+   "name": "Jade Okafor",
+   "age": 63,
+   "condition": "menopause (on HRT)",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P004",
+   "name": "Valeria Novak",
+   "age": 64,
+   "condition": "menopause (on HRT)",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P005",
+   "name": "Nadia Haddad",
+   "age": 28,
+   "condition": "fertility evaluation",
+   "provider": "Dr. L. Chen"
+  },
+  {
+   "id": "P006",
+   "name": "Jade Walsh",
+   "age": 41,
+   "condition": "fertility evaluation",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P007",
+   "name": "Olivia Silva",
+   "age": 39,
+   "condition": "prenatal care (third trimester)",
+   "provider": "Dr. S. Iyer"
+  },
+  {
+   "id": "P008",
+   "name": "Valeria Lopez",
+   "age": 38,
+   "condition": "prenatal care (second trimester)",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P009",
+   "name": "Rosa Eriksen",
+   "age": 38,
+   "condition": "fertility evaluation",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P010",
+   "name": "Mei Haddad",
+   "age": 44,
+   "condition": "perimenopause",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P011",
+   "name": "Zainab Eriksen",
+   "age": 26,
+   "condition": "gestational diabetes",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P012",
+   "name": "Jade Garcia",
+   "age": 43,
+   "condition": "endometriosis",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P013",
+   "name": "Tamar Lopez",
+   "age": 26,
+   "condition": "fertility evaluation",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P014",
+   "name": "Esi Eriksen",
+   "age": 32,
+   "condition": "hypothyroidism in pregnancy",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P015",
+   "name": "Uma Mwangi",
+   "age": 37,
+   "condition": "fertility evaluation",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P016",
+   "name": "Sofia Kim",
+   "age": 26,
+   "condition": "fertility evaluation",
+   "provider": "Dr. L. Chen"
+  },
+  {
+   "id": "P017",
+   "name": "Chloe Mensah",
+   "age": 23,
+   "condition": "contraception management",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P018",
+   "name": "Priya Okafor",
+   "age": 42,
+   "condition": "fertility evaluation",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P019",
+   "name": "Imani Ito",
+   "age": 34,
+   "condition": "hypothyroidism in pregnancy",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P020",
+   "name": "Jade Tanaka",
+   "age": 24,
+   "condition": "prenatal care (second trimester)",
+   "provider": "Dr. L. Chen"
+  },
+  {
+   "id": "P021",
+   "name": "Ximena Tanaka",
+   "age": 45,
+   "condition": "uterine fibroids",
+   "provider": "Dr. S. Iyer"
+  },
+  {
+   "id": "P022",
+   "name": "Amara Uwimana",
+   "age": 52,
+   "condition": "menopause (on HRT)",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P023",
+   "name": "Rosa Kowalski",
+   "age": 38,
+   "condition": "hypothyroidism in pregnancy",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P024",
+   "name": "Priya Novak",
+   "age": 35,
+   "condition": "endometriosis",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P025",
+   "name": "Mei Silva",
+   "age": 25,
+   "condition": "PCOS",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P026",
+   "name": "Fatima Uwimana",
+   "age": 40,
+   "condition": "prenatal care (third trimester)",
+   "provider": "Dr. S. Iyer"
+  },
+  {
+   "id": "P027",
+   "name": "Valeria Eriksen",
+   "age": 57,
+   "condition": "menopause (on HRT)",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P028",
+   "name": "Sofia Diallo",
+   "age": 30,
+   "condition": "uterine fibroids",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P029",
+   "name": "Wanjiru Tanaka",
+   "age": 34,
+   "condition": "prenatal care (third trimester)",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P030",
+   "name": "Zainab Mensah",
+   "age": 36,
+   "condition": "hypothyroidism in pregnancy",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P031",
+   "name": "Aisha Tanaka",
+   "age": 35,
+   "condition": "gestational diabetes",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P032",
+   "name": "Bianca Haddad",
+   "age": 25,
+   "condition": "PCOS",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P033",
+   "name": "Rosa Okafor",
+   "age": 30,
+   "condition": "endometriosis",
+   "provider": "Dr. S. Iyer"
+  },
+  {
+   "id": "P034",
+   "name": "Amara Novak",
+   "age": 22,
+   "condition": "prenatal care (third trimester)",
+   "provider": "Dr. R. Alvarez"
+  },
+  {
+   "id": "P035",
+   "name": "Nadia Mwangi",
+   "age": 49,
+   "condition": "perimenopause",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P036",
+   "name": "Imani Kim",
+   "age": 62,
+   "condition": "menopause (on HRT)",
+   "provider": "Dr. A. Mensah"
+  },
+  {
+   "id": "P037",
+   "name": "Zainab Rossi",
+   "age": 25,
+   "condition": "gestational diabetes",
+   "provider": "Dr. L. Chen"
+  },
+  {
+   "id": "P038",
+   "name": "Jade Johansson",
+   "age": 57,
+   "condition": "menopause (on HRT)",
+   "provider": "Dr. L. Chen"
+  },
+  {
+   "id": "P039",
+   "name": "Keisha Okafor",
+   "age": 40,
+   "condition": "gestational diabetes",
+   "provider": "NP K. Brooks"
+  },
+  {
+   "id": "P040",
+   "name": "Nadia Garcia",
+   "age": 31,
+   "condition": "PCOS",
+   "provider": "Dr. L. Chen"
+  }
+ ],
+ "lab_orders": [
+  {
+   "id": "L001",
+   "patient_id": "P001",
+   "test": "Fasting lipid panel",
+   "ordered_date": "2026-09-24",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L002",
+   "patient_id": "P003",
+   "test": "Mammogram",
+   "ordered_date": "2026-09-11",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L003",
+   "patient_id": "P003",
+   "test": "Lipid panel",
+   "ordered_date": "2026-09-11",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L004",
+   "patient_id": "P004",
+   "test": "Mammogram",
+   "ordered_date": "2026-09-12",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L005",
+   "patient_id": "P004",
+   "test": "Mammogram",
+   "ordered_date": "2026-09-16",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L006",
+   "patient_id": "P006",
+   "test": "Day-3 FSH and estradiol",
+   "ordered_date": "2026-09-05",
+   "result_date": "2026-09-10",
+   "status": "resulted"
+  },
+  {
+   "id": "L007",
+   "patient_id": "P006",
+   "test": "AMH",
+   "ordered_date": "2026-09-14",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L008",
+   "patient_id": "P007",
+   "test": "Growth ultrasound",
+   "ordered_date": "2026-09-23",
+   "result_date": "2026-09-28",
+   "status": "resulted"
+  },
+  {
+   "id": "L009",
+   "patient_id": "P007",
+   "test": "Growth ultrasound",
+   "ordered_date": "2026-09-21",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L010",
+   "patient_id": "P008",
+   "test": "Urine culture",
+   "ordered_date": "2026-09-29",
+   "result_date": "2026-10-01",
+   "status": "resulted"
+  },
+  {
+   "id": "L011",
+   "patient_id": "P008",
+   "test": "Anatomy ultrasound",
+   "ordered_date": "2026-09-15",
+   "result_date": "2026-09-18",
+   "status": "resulted"
+  },
+  {
+   "id": "L012",
+   "patient_id": "P011",
+   "test": "HbA1c",
+   "ordered_date": "2026-09-25",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L013",
+   "patient_id": "P012",
+   "test": "CA-125",
+   "ordered_date": "2026-09-09",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L014",
+   "patient_id": "P012",
+   "test": "CBC",
+   "ordered_date": "2026-09-25",
+   "result_date": "2026-09-26",
+   "status": "resulted"
+  },
+  {
+   "id": "L015",
+   "patient_id": "P012",
+   "test": "CA-125",
+   "ordered_date": "2026-09-20",
+   "result_date": "2026-09-24",
+   "status": "resulted"
+  },
+  {
+   "id": "L016",
+   "patient_id": "P013",
+   "test": "Day-3 FSH and estradiol",
+   "ordered_date": "2026-09-30",
+   "result_date": "2026-10-01",
+   "status": "resulted"
+  },
+  {
+   "id": "L017",
+   "patient_id": "P013",
+   "test": "Semen analysis (partner)",
+   "ordered_date": "2026-09-09",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L018",
+   "patient_id": "P014",
+   "test": "Free T4",
+   "ordered_date": "2026-09-19",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L019",
+   "patient_id": "P015",
+   "test": "Hysterosalpingogram",
+   "ordered_date": "2026-09-29",
+   "result_date": "2026-10-01",
+   "status": "resulted"
+  },
+  {
+   "id": "L020",
+   "patient_id": "P016",
+   "test": "Semen analysis (partner)",
+   "ordered_date": "2026-09-06",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L021",
+   "patient_id": "P017",
+   "test": "Pap smear / HPV co-test",
+   "ordered_date": "2026-09-21",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L022",
+   "patient_id": "P017",
+   "test": "STI screen",
+   "ordered_date": "2026-09-13",
+   "result_date": "2026-09-18",
+   "status": "resulted"
+  },
+  {
+   "id": "L023",
+   "patient_id": "P017",
+   "test": "STI screen",
+   "ordered_date": "2026-09-23",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L024",
+   "patient_id": "P018",
+   "test": "Day-3 FSH and estradiol",
+   "ordered_date": "2026-09-04",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L025",
+   "patient_id": "P018",
+   "test": "Day-3 FSH and estradiol",
+   "ordered_date": "2026-09-17",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L026",
+   "patient_id": "P019",
+   "test": "Free T4",
+   "ordered_date": "2026-09-22",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L027",
+   "patient_id": "P019",
+   "test": "Free T4",
+   "ordered_date": "2026-09-01",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L028",
+   "patient_id": "P019",
+   "test": "Free T4",
+   "ordered_date": "2026-10-01",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L029",
+   "patient_id": "P020",
+   "test": "Urine culture",
+   "ordered_date": "2026-09-21",
+   "result_date": "2026-09-27",
+   "status": "resulted"
+  },
+  {
+   "id": "L030",
+   "patient_id": "P020",
+   "test": "Urine culture",
+   "ordered_date": "2026-09-14",
+   "result_date": "2026-09-16",
+   "status": "resulted"
+  },
+  {
+   "id": "L031",
+   "patient_id": "P021",
+   "test": "CBC",
+   "ordered_date": "2026-09-09",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L032",
+   "patient_id": "P022",
+   "test": "DEXA scan",
+   "ordered_date": "2026-09-29",
+   "result_date": "2026-09-30",
+   "status": "resulted"
+  },
+  {
+   "id": "L033",
+   "patient_id": "P023",
+   "test": "TSH",
+   "ordered_date": "2026-09-08",
+   "result_date": "2026-09-13",
+   "status": "resulted"
+  },
+  {
+   "id": "L034",
+   "patient_id": "P023",
+   "test": "Free T4",
+   "ordered_date": "2026-09-25",
+   "result_date": "2026-09-27",
+   "status": "resulted"
+  },
+  {
+   "id": "L035",
+   "patient_id": "P023",
+   "test": "Free T4",
+   "ordered_date": "2026-09-15",
+   "result_date": "2026-09-17",
+   "status": "resulted"
+  },
+  {
+   "id": "L036",
+   "patient_id": "P024",
+   "test": "CA-125",
+   "ordered_date": "2026-09-04",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L037",
+   "patient_id": "P024",
+   "test": "CA-125",
+   "ordered_date": "2026-09-23",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L038",
+   "patient_id": "P024",
+   "test": "Pelvic ultrasound",
+   "ordered_date": "2026-09-27",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L039",
+   "patient_id": "P025",
+   "test": "Hormone panel (LH, FSH, testosterone)",
+   "ordered_date": "2026-09-25",
+   "result_date": "2026-09-30",
+   "status": "resulted"
+  },
+  {
+   "id": "L040",
+   "patient_id": "P025",
+   "test": "Fasting lipid panel",
+   "ordered_date": "2026-09-21",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L041",
+   "patient_id": "P027",
+   "test": "Mammogram",
+   "ordered_date": "2026-09-24",
+   "result_date": "2026-09-25",
+   "status": "resulted"
+  },
+  {
+   "id": "L042",
+   "patient_id": "P029",
+   "test": "CBC",
+   "ordered_date": "2026-09-24",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L043",
+   "patient_id": "P031",
+   "test": "Fasting glucose",
+   "ordered_date": "2026-09-01",
+   "result_date": "2026-09-07",
+   "status": "resulted"
+  },
+  {
+   "id": "L044",
+   "patient_id": "P032",
+   "test": "Hormone panel (LH, FSH, testosterone)",
+   "ordered_date": "2026-09-08",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L045",
+   "patient_id": "P032",
+   "test": "HbA1c",
+   "ordered_date": "2026-09-08",
+   "result_date": "2026-09-10",
+   "status": "resulted"
+  },
+  {
+   "id": "L046",
+   "patient_id": "P034",
+   "test": "Growth ultrasound",
+   "ordered_date": "2026-09-25",
+   "result_date": "2026-09-26",
+   "status": "resulted"
+  },
+  {
+   "id": "L047",
+   "patient_id": "P034",
+   "test": "Group B strep culture",
+   "ordered_date": "2026-09-29",
+   "result_date": "2026-10-01",
+   "status": "resulted"
+  },
+  {
+   "id": "L048",
+   "patient_id": "P035",
+   "test": "Hormone panel (FSH, LH, estradiol)",
+   "ordered_date": "2026-09-08",
+   "result_date": "2026-09-11",
+   "status": "resulted"
+  },
+  {
+   "id": "L049",
+   "patient_id": "P035",
+   "test": "Hormone panel (FSH, LH, estradiol)",
+   "ordered_date": "2026-09-12",
+   "result_date": "2026-09-16",
+   "status": "resulted"
+  },
+  {
+   "id": "L050",
+   "patient_id": "P035",
+   "test": "Lipid panel",
+   "ordered_date": "2026-09-24",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L051",
+   "patient_id": "P036",
+   "test": "Mammogram",
+   "ordered_date": "2026-09-22",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L052",
+   "patient_id": "P036",
+   "test": "DEXA scan",
+   "ordered_date": "2026-09-04",
+   "result_date": "2026-09-07",
+   "status": "resulted"
+  },
+  {
+   "id": "L053",
+   "patient_id": "P036",
+   "test": "DEXA scan",
+   "ordered_date": "2026-09-10",
+   "result_date": "2026-09-13",
+   "status": "resulted"
+  },
+  {
+   "id": "L054",
+   "patient_id": "P037",
+   "test": "HbA1c",
+   "ordered_date": "2026-09-26",
+   "result_date": "2026-09-29",
+   "status": "resulted"
+  },
+  {
+   "id": "L055",
+   "patient_id": "P037",
+   "test": "HbA1c",
+   "ordered_date": "2026-09-15",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L056",
+   "patient_id": "P037",
+   "test": "Growth ultrasound",
+   "ordered_date": "2026-09-16",
+   "result_date": "2026-09-18",
+   "status": "resulted"
+  },
+  {
+   "id": "L057",
+   "patient_id": "P038",
+   "test": "Mammogram",
+   "ordered_date": "2026-09-10",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L058",
+   "patient_id": "P038",
+   "test": "Lipid panel",
+   "ordered_date": "2026-09-01",
+   "result_date": "2026-09-03",
+   "status": "resulted"
+  },
+  {
+   "id": "L059",
+   "patient_id": "P038",
+   "test": "DEXA scan",
+   "ordered_date": "2026-09-24",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L060",
+   "patient_id": "P039",
+   "test": "Fasting glucose",
+   "ordered_date": "2026-09-23",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L061",
+   "patient_id": "P040",
+   "test": "Fasting lipid panel",
+   "ordered_date": "2026-10-01",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L062",
+   "patient_id": "P040",
+   "test": "Hormone panel (LH, FSH, testosterone)",
+   "ordered_date": "2026-09-23",
+   "result_date": "",
+   "status": "pending"
+  },
+  {
+   "id": "L063",
+   "patient_id": "P040",
+   "test": "Hormone panel (LH, FSH, testosterone)",
+   "ordered_date": "2026-09-15",
+   "result_date": "",
+   "status": "pending"
+  }
+ ],
+ "prescriptions": [
+  {
+   "id": "R001",
+   "patient_id": "P002",
+   "drug": "Dienogest 2mg",
+   "ordered_date": "2026-09-18",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R002",
+   "patient_id": "P002",
+   "drug": "Norethindrone 5mg",
+   "ordered_date": "2026-09-12",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R003",
+   "patient_id": "P003",
+   "drug": "Micronized progesterone 100mg",
+   "ordered_date": "2026-09-11",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R004",
+   "patient_id": "P003",
+   "drug": "Micronized progesterone 100mg",
+   "ordered_date": "2026-10-01",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R005",
+   "patient_id": "P004",
+   "drug": "Vaginal estradiol cream",
+   "ordered_date": "2026-09-14",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R006",
+   "patient_id": "P006",
+   "drug": "Letrozole 2.5mg",
+   "ordered_date": "2026-09-19",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R007",
+   "patient_id": "P006",
+   "drug": "Clomiphene 50mg",
+   "ordered_date": "2026-09-30",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R008",
+   "patient_id": "P007",
+   "drug": "Prenatal vitamin",
+   "ordered_date": "2026-09-28",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R009",
+   "patient_id": "P007",
+   "drug": "Ferrous sulfate 325mg",
+   "ordered_date": "2026-09-23",
+   "filled_date": "2026-09-24",
+   "status": "filled"
+  },
+  {
+   "id": "R010",
+   "patient_id": "P008",
+   "drug": "Prenatal vitamin",
+   "ordered_date": "2026-09-16",
+   "filled_date": "2026-09-16",
+   "status": "filled"
+  },
+  {
+   "id": "R011",
+   "patient_id": "P008",
+   "drug": "Prenatal vitamin",
+   "ordered_date": "2026-10-01",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R012",
+   "patient_id": "P009",
+   "drug": "Clomiphene 50mg",
+   "ordered_date": "2026-09-22",
+   "filled_date": "2026-09-22",
+   "status": "filled"
+  },
+  {
+   "id": "R013",
+   "patient_id": "P009",
+   "drug": "Clomiphene 50mg",
+   "ordered_date": "2026-09-20",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R014",
+   "patient_id": "P010",
+   "drug": "Estradiol patch 0.05mg",
+   "ordered_date": "2026-09-27",
+   "filled_date": "2026-09-29",
+   "status": "filled"
+  },
+  {
+   "id": "R015",
+   "patient_id": "P010",
+   "drug": "Micronized progesterone 100mg",
+   "ordered_date": "2026-09-20",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R016",
+   "patient_id": "P011",
+   "drug": "Insulin glargine",
+   "ordered_date": "2026-09-14",
+   "filled_date": "2026-09-15",
+   "status": "filled"
+  },
+  {
+   "id": "R017",
+   "patient_id": "P011",
+   "drug": "Insulin glargine",
+   "ordered_date": "2026-09-18",
+   "filled_date": "2026-09-19",
+   "status": "filled"
+  },
+  {
+   "id": "R018",
+   "patient_id": "P012",
+   "drug": "Naproxen 500mg",
+   "ordered_date": "2026-10-01",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R019",
+   "patient_id": "P013",
+   "drug": "Clomiphene 50mg",
+   "ordered_date": "2026-09-12",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R020",
+   "patient_id": "P013",
+   "drug": "Clomiphene 50mg",
+   "ordered_date": "2026-09-12",
+   "filled_date": "2026-09-15",
+   "status": "filled"
+  },
+  {
+   "id": "R021",
+   "patient_id": "P014",
+   "drug": "Levothyroxine 75mcg",
+   "ordered_date": "2026-09-28",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R022",
+   "patient_id": "P014",
+   "drug": "Levothyroxine 75mcg",
+   "ordered_date": "2026-09-25",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R023",
+   "patient_id": "P015",
+   "drug": "Letrozole 2.5mg",
+   "ordered_date": "2026-09-27",
+   "filled_date": "2026-09-29",
+   "status": "filled"
+  },
+  {
+   "id": "R024",
+   "patient_id": "P015",
+   "drug": "Clomiphene 50mg",
+   "ordered_date": "2026-09-30",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R025",
+   "patient_id": "P016",
+   "drug": "Letrozole 2.5mg",
+   "ordered_date": "2026-09-24",
+   "filled_date": "2026-09-24",
+   "status": "filled"
+  },
+  {
+   "id": "R026",
+   "patient_id": "P019",
+   "drug": "Levothyroxine 75mcg",
+   "ordered_date": "2026-09-26",
+   "filled_date": "2026-09-27",
+   "status": "filled"
+  },
+  {
+   "id": "R027",
+   "patient_id": "P019",
+   "drug": "Levothyroxine 75mcg",
+   "ordered_date": "2026-09-23",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R028",
+   "patient_id": "P020",
+   "drug": "Ferrous sulfate 325mg",
+   "ordered_date": "2026-09-11",
+   "filled_date": "2026-09-12",
+   "status": "filled"
+  },
+  {
+   "id": "R029",
+   "patient_id": "P020",
+   "drug": "Low-dose aspirin 81mg",
+   "ordered_date": "2026-09-18",
+   "filled_date": "2026-09-18",
+   "status": "filled"
+  },
+  {
+   "id": "R030",
+   "patient_id": "P021",
+   "drug": "Ferrous sulfate 325mg",
+   "ordered_date": "2026-09-12",
+   "filled_date": "2026-09-15",
+   "status": "filled"
+  },
+  {
+   "id": "R031",
+   "patient_id": "P021",
+   "drug": "Tranexamic acid 650mg",
+   "ordered_date": "2026-09-22",
+   "filled_date": "2026-09-24",
+   "status": "filled"
+  },
+  {
+   "id": "R032",
+   "patient_id": "P023",
+   "drug": "Levothyroxine 75mcg",
+   "ordered_date": "2026-09-17",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R033",
+   "patient_id": "P024",
+   "drug": "Dienogest 2mg",
+   "ordered_date": "2026-09-28",
+   "filled_date": "2026-09-30",
+   "status": "filled"
+  },
+  {
+   "id": "R034",
+   "patient_id": "P024",
+   "drug": "Naproxen 500mg",
+   "ordered_date": "2026-09-21",
+   "filled_date": "2026-09-23",
+   "status": "filled"
+  },
+  {
+   "id": "R035",
+   "patient_id": "P025",
+   "drug": "Metformin 500mg",
+   "ordered_date": "2026-09-18",
+   "filled_date": "2026-09-20",
+   "status": "filled"
+  },
+  {
+   "id": "R036",
+   "patient_id": "P025",
+   "drug": "Spironolactone 50mg",
+   "ordered_date": "2026-09-27",
+   "filled_date": "2026-09-27",
+   "status": "filled"
+  },
+  {
+   "id": "R037",
+   "patient_id": "P026",
+   "drug": "Prenatal vitamin",
+   "ordered_date": "2026-09-22",
+   "filled_date": "2026-09-25",
+   "status": "filled"
+  },
+  {
+   "id": "R038",
+   "patient_id": "P027",
+   "drug": "Micronized progesterone 100mg",
+   "ordered_date": "2026-09-29",
+   "filled_date": "2026-10-01",
+   "status": "filled"
+  },
+  {
+   "id": "R039",
+   "patient_id": "P028",
+   "drug": "Tranexamic acid 650mg",
+   "ordered_date": "2026-09-23",
+   "filled_date": "2026-09-23",
+   "status": "filled"
+  },
+  {
+   "id": "R040",
+   "patient_id": "P029",
+   "drug": "Ferrous sulfate 325mg",
+   "ordered_date": "2026-09-17",
+   "filled_date": "2026-09-19",
+   "status": "filled"
+  },
+  {
+   "id": "R041",
+   "patient_id": "P032",
+   "drug": "Spironolactone 50mg",
+   "ordered_date": "2026-09-30",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R042",
+   "patient_id": "P032",
+   "drug": "Combined oral contraceptive",
+   "ordered_date": "2026-09-23",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R043",
+   "patient_id": "P033",
+   "drug": "Norethindrone 5mg",
+   "ordered_date": "2026-09-19",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R044",
+   "patient_id": "P036",
+   "drug": "Vaginal estradiol cream",
+   "ordered_date": "2026-09-25",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R045",
+   "patient_id": "P036",
+   "drug": "Micronized progesterone 100mg",
+   "ordered_date": "2026-09-27",
+   "filled_date": "",
+   "status": "ordered"
+  },
+  {
+   "id": "R046",
+   "patient_id": "P037",
+   "drug": "Glucose test strips",
+   "ordered_date": "2026-09-23",
+   "filled_date": "2026-09-23",
+   "status": "filled"
+  },
+  {
+   "id": "R047",
+   "patient_id": "P037",
+   "drug": "Metformin 500mg",
+   "ordered_date": "2026-09-28",
+   "filled_date": "2026-09-28",
+   "status": "filled"
+  },
+  {
+   "id": "R048",
+   "patient_id": "P039",
+   "drug": "Insulin glargine",
+   "ordered_date": "2026-09-24",
+   "filled_date": "2026-09-24",
+   "status": "filled"
+  },
+  {
+   "id": "R049",
+   "patient_id": "P039",
+   "drug": "Glucose test strips",
+   "ordered_date": "2026-09-24",
+   "filled_date": "2026-09-26",
+   "status": "filled"
+  },
+  {
+   "id": "R050",
+   "patient_id": "P040",
+   "drug": "Metformin 500mg",
+   "ordered_date": "2026-09-28",
+   "filled_date": "2026-09-28",
+   "status": "filled"
+  }
+ ],
+ "appointments": [
+  {
+   "id": "A001",
+   "patient_id": "P001",
+   "date": "2026-07-23",
+   "type": "telehealth",
+   "note": "Discussed plan. Follow-up in 2 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A002",
+   "patient_id": "P001",
+   "date": "2026-10-09",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A003",
+   "patient_id": "P002",
+   "date": "2026-08-27",
+   "type": "visit",
+   "note": "Ultrasound reviewed with patient. Follow up in 1 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A004",
+   "patient_id": "P003",
+   "date": "2026-07-26",
+   "type": "ultrasound",
+   "note": "Started new medication; follow up in five weeks to check tolerance.",
+   "status": "completed"
+  },
+  {
+   "id": "A005",
+   "patient_id": "P004",
+   "date": "2026-07-03",
+   "type": "ultrasound",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A006",
+   "patient_id": "P004",
+   "date": "2026-08-07",
+   "type": "visit",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A007",
+   "patient_id": "P005",
+   "date": "2026-07-04",
+   "type": "telehealth",
+   "note": "Discussed plan. Follow-up in 2 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A008",
+   "patient_id": "P005",
+   "date": "2026-08-26",
+   "type": "procedure",
+   "note": "Ultrasound reviewed with patient. Follow up in 5 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A009",
+   "patient_id": "P005",
+   "date": "2026-07-20",
+   "type": "telehealth",
+   "note": "Started new medication; follow up in four weeks to check tolerance.",
+   "status": "completed"
+  },
+  {
+   "id": "A010",
+   "patient_id": "P005",
+   "date": "2026-10-26",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A011",
+   "patient_id": "P006",
+   "date": "2026-08-30",
+   "type": "procedure",
+   "note": "Ultrasound reviewed with patient. Follow up in 1 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A012",
+   "patient_id": "P006",
+   "date": "2026-07-17",
+   "type": "ultrasound",
+   "note": "Annual exam completed.",
+   "status": "completed"
+  },
+  {
+   "id": "A013",
+   "patient_id": "P006",
+   "date": "2026-08-24",
+   "type": "procedure",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "completed"
+  },
+  {
+   "id": "A014",
+   "patient_id": "P007",
+   "date": "2026-07-27",
+   "type": "ultrasound",
+   "note": "Follow up in 3 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A015",
+   "patient_id": "P007",
+   "date": "2026-08-25",
+   "type": "telehealth",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A016",
+   "patient_id": "P007",
+   "date": "2026-08-16",
+   "type": "visit",
+   "note": "Ultrasound reviewed with patient. Follow up in 4 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A017",
+   "patient_id": "P008",
+   "date": "2026-07-09",
+   "type": "procedure",
+   "note": "Follow up in 4 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A018",
+   "patient_id": "P008",
+   "date": "2026-09-20",
+   "type": "ultrasound",
+   "note": "Routine visit, no concerns. Return as needed.",
+   "status": "completed"
+  },
+  {
+   "id": "A019",
+   "patient_id": "P008",
+   "date": "2026-08-26",
+   "type": "telehealth",
+   "note": "Follow up in 6 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A020",
+   "patient_id": "P008",
+   "date": "2026-10-26",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A021",
+   "patient_id": "P009",
+   "date": "2026-08-21",
+   "type": "procedure",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "completed"
+  },
+  {
+   "id": "A022",
+   "patient_id": "P009",
+   "date": "2026-09-23",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A023",
+   "patient_id": "P010",
+   "date": "2026-07-29",
+   "type": "procedure",
+   "note": "Follow up in 1 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A024",
+   "patient_id": "P010",
+   "date": "2026-08-19",
+   "type": "procedure",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A025",
+   "patient_id": "P011",
+   "date": "2026-09-18",
+   "type": "procedure",
+   "note": "Follow up in 2 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A026",
+   "patient_id": "P011",
+   "date": "2026-09-26",
+   "type": "ultrasound",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "completed"
+  },
+  {
+   "id": "A027",
+   "patient_id": "P011",
+   "date": "2026-07-22",
+   "type": "procedure",
+   "note": "Ultrasound reviewed with patient. Follow up in 3 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A028",
+   "patient_id": "P012",
+   "date": "2026-07-14",
+   "type": "ultrasound",
+   "note": "Ultrasound reviewed with patient. Follow up in 5 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A029",
+   "patient_id": "P012",
+   "date": "2026-07-14",
+   "type": "ultrasound",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "completed"
+  },
+  {
+   "id": "A030",
+   "patient_id": "P012",
+   "date": "2026-08-30",
+   "type": "telehealth",
+   "note": "Ultrasound reviewed with patient. Follow up in 5 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A031",
+   "patient_id": "P013",
+   "date": "2026-08-23",
+   "type": "ultrasound",
+   "note": "Started new medication; follow up in three weeks to check tolerance.",
+   "status": "completed"
+  },
+  {
+   "id": "A032",
+   "patient_id": "P013",
+   "date": "2026-07-23",
+   "type": "procedure",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "completed"
+  },
+  {
+   "id": "A033",
+   "patient_id": "P013",
+   "date": "2026-10-29",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A034",
+   "patient_id": "P014",
+   "date": "2026-09-08",
+   "type": "procedure",
+   "note": "Follow up in 3 weeks to review symptoms and results.",
+   "status": "cancelled"
+  },
+  {
+   "id": "A035",
+   "patient_id": "P014",
+   "date": "2026-09-21",
+   "type": "visit",
+   "note": "Education provided, questions answered.",
+   "status": "cancelled"
+  },
+  {
+   "id": "A036",
+   "patient_id": "P014",
+   "date": "2026-07-31",
+   "type": "procedure",
+   "note": "Follow up in 2 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A037",
+   "patient_id": "P015",
+   "date": "2026-07-13",
+   "type": "visit",
+   "note": "Annual exam completed.",
+   "status": "completed"
+  },
+  {
+   "id": "A038",
+   "patient_id": "P015",
+   "date": "2026-09-14",
+   "type": "procedure",
+   "note": "Discussed plan. Follow-up in 5 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A039",
+   "patient_id": "P016",
+   "date": "2026-08-29",
+   "type": "procedure",
+   "note": "Ultrasound reviewed with patient. Follow up in 2 weeks.",
+   "status": "cancelled"
+  },
+  {
+   "id": "A040",
+   "patient_id": "P016",
+   "date": "2026-10-27",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A041",
+   "patient_id": "P017",
+   "date": "2026-09-07",
+   "type": "visit",
+   "note": "Ultrasound reviewed with patient. Follow up in 1 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A042",
+   "patient_id": "P017",
+   "date": "2026-09-14",
+   "type": "telehealth",
+   "note": "Education provided, questions answered.",
+   "status": "cancelled"
+  },
+  {
+   "id": "A043",
+   "patient_id": "P017",
+   "date": "2026-10-01",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A044",
+   "patient_id": "P017",
+   "date": "2026-09-26",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A045",
+   "patient_id": "P018",
+   "date": "2026-09-14",
+   "type": "visit",
+   "note": "Ultrasound reviewed with patient. Follow up in 2 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A046",
+   "patient_id": "P018",
+   "date": "2026-08-11",
+   "type": "visit",
+   "note": "Follow up in 4 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A047",
+   "patient_id": "P018",
+   "date": "2026-07-25",
+   "type": "procedure",
+   "note": "Started new medication; follow up in two weeks to check tolerance.",
+   "status": "completed"
+  },
+  {
+   "id": "A048",
+   "patient_id": "P019",
+   "date": "2026-07-24",
+   "type": "visit",
+   "note": "Follow up in 4 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A049",
+   "patient_id": "P019",
+   "date": "2026-08-28",
+   "type": "visit",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "completed"
+  },
+  {
+   "id": "A050",
+   "patient_id": "P020",
+   "date": "2026-08-27",
+   "type": "telehealth",
+   "note": "Follow up in 1 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A051",
+   "patient_id": "P021",
+   "date": "2026-08-13",
+   "type": "procedure",
+   "note": "Routine visit, no concerns. Return as needed.",
+   "status": "completed"
+  },
+  {
+   "id": "A052",
+   "patient_id": "P021",
+   "date": "2026-08-11",
+   "type": "ultrasound",
+   "note": "Ultrasound reviewed with patient. Follow up in 6 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A053",
+   "patient_id": "P022",
+   "date": "2026-07-25",
+   "type": "procedure",
+   "note": "Follow up in 3 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A054",
+   "patient_id": "P022",
+   "date": "2026-09-03",
+   "type": "procedure",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A055",
+   "patient_id": "P023",
+   "date": "2026-07-18",
+   "type": "telehealth",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "completed"
+  },
+  {
+   "id": "A056",
+   "patient_id": "P023",
+   "date": "2026-08-08",
+   "type": "procedure",
+   "note": "Annual exam completed.",
+   "status": "completed"
+  },
+  {
+   "id": "A057",
+   "patient_id": "P023",
+   "date": "2026-10-06",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A058",
+   "patient_id": "P024",
+   "date": "2026-07-25",
+   "type": "telehealth",
+   "note": "Ultrasound reviewed with patient. Follow up in 3 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A059",
+   "patient_id": "P024",
+   "date": "2026-09-16",
+   "type": "telehealth",
+   "note": "Annual exam completed.",
+   "status": "completed"
+  },
+  {
+   "id": "A060",
+   "patient_id": "P024",
+   "date": "2026-08-14",
+   "type": "procedure",
+   "note": "Discussed plan. Follow-up in 2 weeks.",
+   "status": "cancelled"
+  },
+  {
+   "id": "A061",
+   "patient_id": "P025",
+   "date": "2026-09-10",
+   "type": "procedure",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A062",
+   "patient_id": "P025",
+   "date": "2026-09-08",
+   "type": "visit",
+   "note": "Ultrasound reviewed with patient. Follow up in 3 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A063",
+   "patient_id": "P025",
+   "date": "2026-07-24",
+   "type": "ultrasound",
+   "note": "Ultrasound reviewed with patient. Follow up in 1 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A064",
+   "patient_id": "P026",
+   "date": "2026-07-10",
+   "type": "procedure",
+   "note": "Routine visit, no concerns. Return as needed.",
+   "status": "completed"
+  },
+  {
+   "id": "A065",
+   "patient_id": "P026",
+   "date": "2026-07-20",
+   "type": "procedure",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A066",
+   "patient_id": "P027",
+   "date": "2026-09-02",
+   "type": "telehealth",
+   "note": "Discussed plan. Follow-up in 5 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A067",
+   "patient_id": "P028",
+   "date": "2026-09-13",
+   "type": "procedure",
+   "note": "Ultrasound reviewed with patient. Follow up in 5 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A068",
+   "patient_id": "P028",
+   "date": "2026-10-03",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A069",
+   "patient_id": "P029",
+   "date": "2026-07-31",
+   "type": "ultrasound",
+   "note": "Started new medication; follow up in four weeks to check tolerance.",
+   "status": "completed"
+  },
+  {
+   "id": "A070",
+   "patient_id": "P030",
+   "date": "2026-08-31",
+   "type": "visit",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A071",
+   "patient_id": "P030",
+   "date": "2026-09-02",
+   "type": "telehealth",
+   "note": "Education provided, questions answered.",
+   "status": "completed"
+  },
+  {
+   "id": "A072",
+   "patient_id": "P030",
+   "date": "2026-10-13",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A073",
+   "patient_id": "P031",
+   "date": "2026-09-01",
+   "type": "ultrasound",
+   "note": "Discussed plan. Follow-up in 4 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A074",
+   "patient_id": "P031",
+   "date": "2026-07-04",
+   "type": "procedure",
+   "note": "Discussed plan. Follow-up in 1 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A075",
+   "patient_id": "P032",
+   "date": "2026-09-08",
+   "type": "procedure",
+   "note": "Discussed plan. Follow-up in 2 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A076",
+   "patient_id": "P033",
+   "date": "2026-08-29",
+   "type": "telehealth",
+   "note": "Education provided, questions answered.",
+   "status": "completed"
+  },
+  {
+   "id": "A077",
+   "patient_id": "P033",
+   "date": "2026-10-14",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A078",
+   "patient_id": "P034",
+   "date": "2026-09-19",
+   "type": "telehealth",
+   "note": "Started new medication; follow up in one week to check tolerance.",
+   "status": "completed"
+  },
+  {
+   "id": "A079",
+   "patient_id": "P034",
+   "date": "2026-07-04",
+   "type": "ultrasound",
+   "note": "Follow up in 1 weeks to review symptoms and results.",
+   "status": "completed"
+  },
+  {
+   "id": "A080",
+   "patient_id": "P035",
+   "date": "2026-07-21",
+   "type": "procedure",
+   "note": "Annual exam completed.",
+   "status": "completed"
+  },
+  {
+   "id": "A081",
+   "patient_id": "P035",
+   "date": "2026-08-21",
+   "type": "telehealth",
+   "note": "Routine visit, no concerns. Return as needed.",
+   "status": "completed"
+  },
+  {
+   "id": "A082",
+   "patient_id": "P035",
+   "date": "2026-10-18",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A083",
+   "patient_id": "P036",
+   "date": "2026-07-26",
+   "type": "telehealth",
+   "note": "Counselled on options; patient will call to decide.",
+   "status": "completed"
+  },
+  {
+   "id": "A084",
+   "patient_id": "P037",
+   "date": "2026-08-10",
+   "type": "procedure",
+   "note": "Discussed plan. Follow-up in 5 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A085",
+   "patient_id": "P037",
+   "date": "2026-08-27",
+   "type": "procedure",
+   "note": "Vitals normal. Continue current plan.",
+   "status": "cancelled"
+  },
+  {
+   "id": "A086",
+   "patient_id": "P038",
+   "date": "2026-07-31",
+   "type": "ultrasound",
+   "note": "Discussed plan. Follow-up in 1 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A087",
+   "patient_id": "P038",
+   "date": "2026-10-15",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A088",
+   "patient_id": "P039",
+   "date": "2026-09-23",
+   "type": "procedure",
+   "note": "Annual exam completed.",
+   "status": "completed"
+  },
+  {
+   "id": "A089",
+   "patient_id": "P039",
+   "date": "2026-08-01",
+   "type": "procedure",
+   "note": "Started new medication; follow up in three weeks to check tolerance.",
+   "status": "completed"
+  },
+  {
+   "id": "A090",
+   "patient_id": "P039",
+   "date": "2026-07-29",
+   "type": "visit",
+   "note": "Discussed plan. Follow-up in 1 weeks.",
+   "status": "completed"
+  },
+  {
+   "id": "A091",
+   "patient_id": "P039",
+   "date": "2026-10-04",
+   "type": "visit",
+   "note": "",
+   "status": "scheduled"
+  },
+  {
+   "id": "A092",
+   "patient_id": "P040",
+   "date": "2026-08-27",
+   "type": "procedure",
+   "note": "Discussed plan. Follow-up in 1 weeks.",
+   "status": "completed"
+  }
+ ],
+ "messages": [
+  {
+   "id": "M001",
+   "patient_id": "P002",
+   "received_date": "2026-09-29",
+   "read": true,
+   "subject": "Scheduling",
+   "body": "Can someone help me schedule the lab the doctor ordered?"
+  },
+  {
+   "id": "M002",
+   "patient_id": "P002",
+   "received_date": "2026-09-29",
+   "read": true,
+   "subject": "Feeling low",
+   "body": "I've been having thoughts of harming myself since the baby came."
+  },
+  {
+   "id": "M003",
+   "patient_id": "P003",
+   "received_date": "2026-10-01",
+   "read": true,
+   "subject": "Side effects",
+   "body": "The progesterone is making me dizzy and nauseous at night. Should I keep taking it?"
+  },
+  {
+   "id": "M004",
+   "patient_id": "P003",
+   "received_date": "2026-10-01",
+   "read": false,
+   "subject": "Thanks",
+   "body": "Thank you all for the help last week, feeling much better."
+  },
+  {
+   "id": "M005",
+   "patient_id": "P005",
+   "received_date": "2026-09-30",
+   "read": false,
+   "subject": "Parking",
+   "body": "Where do I park for the new clinic location?"
+  },
+  {
+   "id": "M006",
+   "patient_id": "P005",
+   "received_date": "2026-09-25",
+   "read": false,
+   "subject": "Prep",
+   "body": "Do I need to be fasting before my blood draw next week?"
+  },
+  {
+   "id": "M007",
+   "patient_id": "P006",
+   "received_date": "2026-09-28",
+   "read": false,
+   "subject": "Rash",
+   "body": "I have an itchy rash on my arms since I started letrozole."
+  },
+  {
+   "id": "M008",
+   "patient_id": "P006",
+   "received_date": "2026-09-30",
+   "read": true,
+   "subject": "Update",
+   "body": "Just an update, I picked up the prescription today."
+  },
+  {
+   "id": "M009",
+   "patient_id": "P008",
+   "received_date": "2026-09-27",
+   "read": false,
+   "subject": "Thanks",
+   "body": "Thank you all for the help last week, feeling much better."
+  },
+  {
+   "id": "M010",
+   "patient_id": "P008",
+   "received_date": "2026-09-29",
+   "read": true,
+   "subject": "Records",
+   "body": "Please send my records to my new OB."
+  },
+  {
+   "id": "M011",
+   "patient_id": "P009",
+   "received_date": "2026-09-26",
+   "read": false,
+   "subject": "Billing",
+   "body": "I got a bill I think was already paid by my insurance. Can someone check?"
+  },
+  {
+   "id": "M012",
+   "patient_id": "P010",
+   "received_date": "2026-09-26",
+   "read": false,
+   "subject": "Reschedule",
+   "body": "I need to reschedule Thursday's appointment, something came up at work."
+  },
+  {
+   "id": "M013",
+   "patient_id": "P011",
+   "received_date": "2026-09-30",
+   "read": false,
+   "subject": "Missed pills",
+   "body": "I missed two pills while traveling. Do I need backup contraception?"
+  },
+  {
+   "id": "M014",
+   "patient_id": "P013",
+   "received_date": "2026-09-29",
+   "read": false,
+   "subject": "Prep",
+   "body": "Do I need to be fasting before my blood draw next week?"
+  },
+  {
+   "id": "M015",
+   "patient_id": "P015",
+   "received_date": "2026-09-26",
+   "read": false,
+   "subject": "Positive test",
+   "body": "Got a positive pregnancy test this morning! What do I do next?"
+  },
+  {
+   "id": "M016",
+   "patient_id": "P016",
+   "received_date": "2026-09-26",
+   "read": false,
+   "subject": "Update",
+   "body": "Just an update, I picked up the prescription today."
+  },
+  {
+   "id": "M017",
+   "patient_id": "P016",
+   "received_date": "2026-10-01",
+   "read": true,
+   "subject": "breathing",
+   "body": "Having trouble breathing after the injection this morning."
+  },
+  {
+   "id": "M018",
+   "patient_id": "P017",
+   "received_date": "2026-09-27",
+   "read": false,
+   "subject": "Records",
+   "body": "Please send my records to my new OB."
+  },
+  {
+   "id": "M019",
+   "patient_id": "P017",
+   "received_date": "2026-09-30",
+   "read": true,
+   "subject": "Rash",
+   "body": "I have an itchy rash on my arms since I started letrozole."
+  },
+  {
+   "id": "M020",
+   "patient_id": "P019",
+   "received_date": "2026-09-27",
+   "read": false,
+   "subject": "Scheduling",
+   "body": "Can someone help me schedule the lab the doctor ordered?"
+  },
+  {
+   "id": "M021",
+   "patient_id": "P020",
+   "received_date": "2026-09-29",
+   "read": false,
+   "subject": "headache",
+   "body": "34 weeks, severe headache and blurry vision since this morning."
+  },
+  {
+   "id": "M022",
+   "patient_id": "P020",
+   "received_date": "2026-09-25",
+   "read": false,
+   "subject": "Side effects",
+   "body": "The progesterone is making me dizzy and nauseous at night. Should I keep taking it?"
+  },
+  {
+   "id": "M023",
+   "patient_id": "P021",
+   "received_date": "2026-09-25",
+   "read": false,
+   "subject": "Results",
+   "body": "I saw my test results in the portal. Should I change anything before my visit?"
+  },
+  {
+   "id": "M024",
+   "patient_id": "P021",
+   "received_date": "2026-09-29",
+   "read": false,
+   "subject": "Prep",
+   "body": "Do I need to be fasting before my blood draw next week?"
+  },
+  {
+   "id": "M025",
+   "patient_id": "P023",
+   "received_date": "2026-09-26",
+   "read": false,
+   "subject": "Billing",
+   "body": "I got a bill I think was already paid by my insurance. Can someone check?"
+  },
+  {
+   "id": "M026",
+   "patient_id": "P023",
+   "received_date": "2026-09-28",
+   "read": false,
+   "subject": "Results",
+   "body": "I saw my test results in the portal. Should I change anything before my visit?"
+  },
+  {
+   "id": "M027",
+   "patient_id": "P024",
+   "received_date": "2026-09-29",
+   "read": true,
+   "subject": "Going in",
+   "body": "Cramps are unbearable, I'm going to urgent care tonight unless someone calls."
+  },
+  {
+   "id": "M028",
+   "patient_id": "P024",
+   "received_date": "2026-09-30",
+   "read": false,
+   "subject": "Rash",
+   "body": "I have an itchy rash on my arms since I started letrozole."
+  },
+  {
+   "id": "M029",
+   "patient_id": "P026",
+   "received_date": "2026-09-29",
+   "read": true,
+   "subject": "Side effects",
+   "body": "The progesterone is making me dizzy and nauseous at night. Should I keep taking it?"
+  },
+  {
+   "id": "M030",
+   "patient_id": "P027",
+   "received_date": "2026-09-27",
+   "read": false,
+   "subject": "Prep",
+   "body": "Do I need to be fasting before my blood draw next week?"
+  },
+  {
+   "id": "M031",
+   "patient_id": "P027",
+   "received_date": "2026-09-27",
+   "read": true,
+   "subject": "Missed pills",
+   "body": "I missed two pills while traveling. Do I need backup contraception?"
+  },
+  {
+   "id": "M032",
+   "patient_id": "P028",
+   "received_date": "2026-09-29",
+   "read": false,
+   "subject": "Refill",
+   "body": "Can I get a refill of my prenatal vitamins sent to the same pharmacy?"
+  },
+  {
+   "id": "M033",
+   "patient_id": "P029",
+   "received_date": "2026-10-01",
+   "read": false,
+   "subject": "Records",
+   "body": "Please send my records to my new OB."
+  },
+  {
+   "id": "M034",
+   "patient_id": "P029",
+   "received_date": "2026-09-30",
+   "read": true,
+   "subject": "Hot flashes",
+   "body": "Hot flashes are worse even with the patch, waking me up every night."
+  },
+  {
+   "id": "M035",
+   "patient_id": "P030",
+   "received_date": "2026-09-30",
+   "read": false,
+   "subject": "Mood",
+   "body": "My mood has been really low and anxious the last few weeks."
+  },
+  {
+   "id": "M036",
+   "patient_id": "P030",
+   "received_date": "2026-09-29",
+   "read": false,
+   "subject": "Rash",
+   "body": "I have an itchy rash on my arms since I started letrozole."
+  },
+  {
+   "id": "M037",
+   "patient_id": "P031",
+   "received_date": "2026-09-29",
+   "read": true,
+   "subject": "Update",
+   "body": "Just an update, I picked up the prescription today."
+  },
+  {
+   "id": "M038",
+   "patient_id": "P031",
+   "received_date": "2026-09-25",
+   "read": true,
+   "subject": "Scheduling",
+   "body": "Can someone help me schedule the lab the doctor ordered?"
+  },
+  {
+   "id": "M039",
+   "patient_id": "P032",
+   "received_date": "2026-09-26",
+   "read": false,
+   "subject": "Scheduling",
+   "body": "Can someone help me schedule the lab the doctor ordered?"
+  },
+  {
+   "id": "M040",
+   "patient_id": "P033",
+   "received_date": "2026-09-25",
+   "read": false,
+   "subject": "Records",
+   "body": "Please send my records to my new OB."
+  },
+  {
+   "id": "M041",
+   "patient_id": "P035",
+   "received_date": "2026-09-30",
+   "read": false,
+   "subject": "Scheduling",
+   "body": "Can someone help me schedule the lab the doctor ordered?"
+  },
+  {
+   "id": "M042",
+   "patient_id": "P035",
+   "received_date": "2026-09-30",
+   "read": true,
+   "subject": "Results",
+   "body": "I saw my test results in the portal. Should I change anything before my visit?"
+  },
+  {
+   "id": "M043",
+   "patient_id": "P036",
+   "received_date": "2026-09-29",
+   "read": false,
+   "subject": "Mood",
+   "body": "My mood has been really low and anxious the last few weeks."
+  },
+  {
+   "id": "M044",
+   "patient_id": "P036",
+   "received_date": "2026-09-30",
+   "read": false,
+   "subject": "Reschedule",
+   "body": "I need to reschedule Thursday's appointment, something came up at work."
+  },
+  {
+   "id": "M045",
+   "patient_id": "P037",
+   "received_date": "2026-09-26",
+   "read": false,
+   "subject": "Results",
+   "body": "I saw my test results in the portal. Should I change anything before my visit?"
+  },
+  {
+   "id": "M046",
+   "patient_id": "P039",
+   "received_date": "2026-09-25",
+   "read": true,
+   "subject": "Reschedule",
+   "body": "I need to reschedule Thursday's appointment, something came up at work."
+  },
+  {
+   "id": "M047",
+   "patient_id": "P040",
+   "received_date": "2026-09-28",
+   "read": false,
+   "subject": "Billing",
+   "body": "I got a bill I think was already paid by my insurance. Can someone check?"
+  },
+  {
+   "id": "M048",
+   "patient_id": "P040",
+   "received_date": "2026-09-29",
+   "read": false,
+   "subject": "Mood",
+   "body": "My mood has been really low and anxious the last few weeks."
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+id,patient_id,received_date,read,subject,body
+M001,P009,2026-09-30,false,Bleeding,The bleeding has become very heavy since last night and I feel faint.
+M002,P003,2026-09-29,false,Cost question,"Hi, how much will my ultrasound cost with my insurance?"
+M003,P001,2026-09-30,false,Results,I saw my test results in the portal. Should I change anything before my visit?
+M004,P010,2026-09-28,false,Missed pills,I missed two pills while traveling. I am back home now. Do I need backup?
+M005,P006,2026-10-01,false,Scheduling,Can someone help me schedule the lab the doctor ordered?
+M006,P008,2026-10-01,false,quick question,"Baby hasn't moved much since yesterday, is that normal at 35 weeks?"
+M007,P005,2026-09-27,false,Feeling low,"Still haven't picked up the sertraline, it was too expensive. Mood has been really low."
+M008,P004,2026-09-25,true,Thanks,"Thank you, picked up the letrozole."

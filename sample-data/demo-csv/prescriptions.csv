@@ -1,0 +1,6 @@
+id,patient_id,drug,ordered_date,filled_date,status
+R001,P001,Micronized progesterone 100mg,2026-09-26,,ordered
+R002,P005,Sertraline 50mg,2026-09-20,,ordered
+R003,P004,Letrozole 2.5mg,2026-09-25,2026-09-26,filled
+R004,P009,Ferrous sulfate 325mg,2026-09-29,,ordered
+R005,P006,Metformin 500mg,2026-09-12,2026-09-13,filled

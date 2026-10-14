@@ -1,0 +1,1727 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Care Tracker Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f2f5f4; --surface: #ffffff; --surface-2: #f7f9f8; --surface-3: #edf2f0;
+      --ink: #17211e; --muted: #65726e; --line: #dbe3e0;
+      --teal: #087f6d; --teal-deep: #075f53; --teal-pale: #dff2ed;
+      --coral: #dc563e; --coral-pale: #fbe8e4; --amber: #9a6500; --amber-pale: #fff1cf;
+      --blue: #22649b; --blue-pale: #e4f0fa; --violet: #6b4fa8; --violet-pale: #efe9fa;
+      --shadow-sm: 0 4px 16px rgba(28, 52, 45, .07);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f1614; --surface: #17201d; --surface-2: #1c2723; --surface-3: #26332f;
+        --ink: #f0f5f3; --muted: #9daaa6; --line: #34433e;
+        --teal: #55c7af; --teal-deep: #8edbc9; --teal-pale: #153d34;
+        --coral: #ff8d76; --coral-pale: #45241f; --amber: #f2bf55; --amber-pale: #3e321b;
+        --blue: #75b2e4; --blue-pale: #1d3446; --violet: #b9a2ea; --violet-pale: #2e2640;
+        --shadow-sm: 0 4px 16px rgba(0, 0, 0, .18);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { min-width: 320px; background: var(--bg); }
+    body { margin: 0; min-height: 100vh; background: var(--bg); color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; font-size: 14px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+    button, input, select { font: inherit; color: inherit; }
+    svg { display: block; }
+    .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+    .app-shell { min-height: 100vh; display: grid; grid-template-columns: 232px minmax(0, 1fr); }
+
+    .rail { position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column; padding: 26px 18px 20px; background: #102c27; color: #e8f4f0; }
+    .brand-mark { display: flex; align-items: center; gap: 11px; padding: 0 10px 28px; }
+    .brand-symbol { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 9px; background: #d6f15a; color: #102c27; }
+    .brand-copy { display: grid; }
+    .brand-copy strong { font-size: 14px; letter-spacing: -.01em; }
+    .brand-copy span { font-size: 11px; color: #93b3aa; }
+    .nav-label { padding: 0 11px 8px; font: 500 10px/1 "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .11em; color: #73958c; }
+    .nav { display: grid; gap: 4px; }
+    .nav button { position: relative; width: 100%; display: flex; align-items: center; gap: 11px; border: 0; border-radius: 8px; padding: 10px 11px; background: transparent; color: #a9c2bb; text-align: left; cursor: pointer; }
+    .nav button svg { width: 18px; height: 18px; }
+    .nav button:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .nav button.active { background: #244b42; color: #fff; }
+    .nav .count { margin-left: auto; min-width: 22px; padding: 2px 6px; border-radius: 99px; background: #d6f15a; color: #17372f; font-size: 11px; font-weight: 700; text-align: center; }
+    .nav .count:empty { display: none; }
+    .rail-spacer { flex: 1; }
+    .rail-status { margin-top: 20px; padding: 14px; border: 1px solid #2f5149; border-radius: 10px; background: rgba(255,255,255,.035); }
+    .rail-status .line { display: flex; align-items: center; gap: 8px; color: #d8ebe6; font-size: 12px; }
+    .rail-status p { margin: 8px 0 0; color: #8cabA3; font-size: 11px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #d6f15a; box-shadow: 0 0 0 4px rgba(214,241,90,.12); }
+    .live-dot.off { background: #f2bf55; box-shadow: 0 0 0 4px rgba(242,191,85,.12); }
+
+    .main { min-width: 0; padding: 26px clamp(18px, 3.2vw, 52px) 48px; }
+    .topbar { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; margin-bottom: 26px; }
+    .eyebrow { margin: 0 0 5px; color: var(--muted); font-size: 12px; font-weight: 600; }
+    h1 { margin: 0; font-size: clamp(26px, 3vw, 38px); line-height: 1.1; letter-spacing: -.035em; }
+    .top-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+    .ghost-btn, .primary-btn, .danger-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; border-radius: 8px; padding: 0 14px; cursor: pointer; font-weight: 700; white-space: nowrap; }
+    .ghost-btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+    .primary-btn { border: 1px solid var(--teal-deep); background: var(--teal-deep); color: #fff; box-shadow: var(--shadow-sm); }
+    .danger-btn { border: 1px solid var(--line); background: var(--surface); color: var(--coral); }
+    @media (prefers-color-scheme: dark) { .primary-btn { color: #10241e; } }
+    .ghost-btn:hover, .danger-btn:hover { border-color: var(--teal); }
+    .primary-btn:hover { filter: brightness(.95); }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .small-btn { min-height: 32px; padding: 0 10px; font-size: 12px; }
+    .top-actions svg, .primary-btn svg, .ghost-btn svg { width: 17px; height: 17px; }
+
+    .page { display: none; }
+    .page.active { display: block; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .metric { min-width: 0; padding: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow-sm); }
+    .metric-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .metric-label { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .metric-icon { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 8px; }
+    .metric-icon svg { width: 16px; height: 16px; }
+    .metric strong { display: block; margin-top: 11px; font-size: 26px; line-height: 1; letter-spacing: -.04em; }
+    .metric small { display: block; margin-top: 7px; color: var(--muted); font-size: 11px; }
+    .m-dead .metric-icon { color: var(--amber); background: var(--amber-pale); }
+    .m-triage .metric-icon { color: var(--blue); background: var(--blue-pale); }
+    .m-urgent .metric-icon { color: var(--coral); background: var(--coral-pale); }
+    .m-saved .metric-icon { color: var(--teal); background: var(--teal-pale); }
+
+    .content-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, .75fr); gap: 16px; align-items: start; }
+    .panel { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-sm); overflow: hidden; }
+    .panel + .panel { margin-top: 16px; }
+    .panel-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 19px 20px 14px; }
+    .panel-head h2 { margin: 0; font-size: 17px; letter-spacing: -.02em; }
+    .panel-head p { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+    .panel-body { padding: 0 20px 20px; }
+    .link-btn { border: 0; background: transparent; color: var(--teal); padding: 2px 0; font-weight: 700; cursor: pointer; white-space: nowrap; }
+    .filters { display: flex; gap: 7px; padding: 0 20px 15px; flex-wrap: wrap; }
+    .filter { border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); padding: 6px 10px; border-radius: 7px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .filter.active { border-color: var(--teal); background: var(--teal-pale); color: var(--teal-deep); }
+    .case-list { border-top: 1px solid var(--line); max-height: 640px; overflow: auto; }
+    .case-row { display: grid; grid-template-columns: 28px minmax(0, 1.2fr) minmax(130px, 1fr) minmax(70px, .45fr) 18px; gap: 12px; align-items: center; padding: 13px 20px; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .case-row:last-child { border-bottom: 0; }
+    .case-row:hover, .case-row.selected { background: var(--surface-2); }
+    .case-avatar { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-3); color: var(--ink); font-size: 10px; font-weight: 800; }
+    .case-main, .case-type { min-width: 0; }
+    .case-main strong, .case-type strong { display: block; font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .case-type strong { font-size: 12px; }
+    .case-main span, .case-type span { display: block; color: var(--muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .case-age { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); text-align: right; }
+    .case-age b { display: block; margin-top: 4px; font: 700 10px "DM Sans", sans-serif; text-transform: uppercase; }
+    .sev-urgent { color: var(--coral); } .sev-high { color: var(--coral); } .sev-medium { color: var(--amber); } .sev-low { color: var(--teal); }
+    .chev { color: var(--muted); }
+    .chev svg { width: 17px; height: 17px; }
+    .empty { padding: 34px 20px; text-align: center; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); }
+    .empty strong { display: block; color: var(--ink); margin-bottom: 4px; }
+
+    .brief-card { padding: 20px; }
+    .brief-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .agent-orb { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 11px 11px 11px 4px; background: var(--teal-pale); color: var(--teal-deep); flex: 0 0 auto; }
+    .agent-orb svg { width: 19px; height: 19px; }
+    .brief-head strong { display: block; }
+    .brief-head span { display: block; color: var(--muted); font-size: 11px; }
+    .brief-copy { margin: 0; font-size: 13px; line-height: 1.62; }
+    .brief-copy b { color: var(--coral); }
+    .brief-list { margin: 10px 0 0; padding-left: 18px; font-size: 12px; color: var(--ink); }
+    .brief-list li { margin: 4px 0; }
+    .brief-sub { margin: 14px 0 0; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+    .priority { display: grid; grid-template-columns: 4px 1fr; gap: 12px; margin-top: 16px; padding: 13px; background: var(--surface-2); border-radius: 8px; }
+    .priority-bar { border-radius: 8px; background: var(--coral); }
+    .priority strong { display: block; font-size: 12px; }
+    .priority span { display: block; color: var(--muted); margin-top: 2px; font-size: 11px; }
+    .agent-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .agent-stats div { text-align: center; border-right: 1px solid var(--line); }
+    .agent-stats div:last-child { border-right: 0; }
+    .agent-stats strong { display: block; font-size: 15px; }
+    .agent-stats span { color: var(--muted); font-size: 10px; }
+    .guardrail { display: flex; gap: 9px; margin-top: 16px; padding: 12px; border: 1px solid var(--line); border-radius: 8px; color: var(--muted); font-size: 11px; }
+    .guardrail svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--teal); }
+
+    .flow-strip { margin-top: 16px; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-sm); }
+    .flow-title { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; margin-bottom: 17px; }
+    .flow-title h2 { margin: 0; font-size: 15px; }
+    .flow-title span { color: var(--muted); font-size: 11px; }
+    .flow { display: grid; grid-template-columns: repeat(9, auto); align-items: center; gap: 10px; }
+    .flow-step { min-width: 0; display: flex; align-items: center; gap: 9px; }
+    .flow-step .flow-num { flex: 0 0 auto; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--teal-pale); color: var(--teal-deep); font: 700 10px "IBM Plex Mono", monospace; }
+    .flow-step strong { display: block; font-size: 11px; }
+    .flow-step span { display: block; color: var(--muted); font-size: 10px; }
+    .flow-arrow { color: var(--line); }
+    .note { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; color: var(--muted); font-size: 10px; }
+    .note svg { width: 14px; height: 14px; flex: 0 0 auto; }
+
+    .inbox-layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); gap: 16px; align-items: start; }
+    .message-list { padding: 0 16px 16px; max-height: 720px; overflow: auto; }
+    .message-card { padding: 14px 15px; border-top: 1px solid var(--line); cursor: pointer; border-radius: 6px; }
+    .message-card:hover, .message-card.selected { background: var(--surface-2); }
+    .message-meta { display: flex; justify-content: space-between; gap: 12px; }
+    .message-meta strong { font-size: 13px; }
+    .message-meta time { color: var(--muted); font-size: 10px; white-space: nowrap; }
+    .message-card p { margin: 6px 0 9px; color: var(--muted); font-size: 12px; }
+    .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 7px; border-radius: 5px; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; white-space: nowrap; }
+    .badge.urgent { background: var(--coral-pale); color: var(--coral); }
+    .badge.clinician_review { background: var(--amber-pale); color: var(--amber); }
+    .badge.routine { background: var(--teal-pale); color: var(--teal-deep); }
+    .badge.administrative { background: var(--blue-pale); color: var(--blue); }
+    .badge.neutral { background: var(--surface-3); color: var(--muted); }
+    .badge.ai { background: var(--violet-pale); color: var(--violet); }
+    .detail-body { padding: 20px; border-top: 1px solid var(--line); }
+    .detail-body dl { margin: 0; display: grid; grid-template-columns: 104px 1fr; row-gap: 12px; column-gap: 10px; }
+    .detail-body dt { color: var(--muted); font-size: 11px; }
+    .detail-body dd { margin: 0; font-size: 12px; font-weight: 600; overflow-wrap: anywhere; }
+    .quote { margin: 0 0 16px; padding: 12px 14px; border-left: 3px solid var(--teal); background: var(--surface-2); border-radius: 4px 8px 8px 4px; font-size: 13px; }
+    .quote b { display: block; margin-bottom: 4px; }
+    .rationale { margin-top: 16px; padding: 14px; background: var(--surface-2); border-radius: 8px; }
+    .rationale b { display: block; margin-bottom: 4px; font-size: 11px; }
+    .rationale p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.55; }
+
+    .audit-timeline { padding: 4px 22px 24px; }
+    .audit-cycle { margin: 14px 0 8px; font: 700 11px "IBM Plex Mono", monospace; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+    .audit-item { position: relative; display: grid; grid-template-columns: 96px 24px 1fr; gap: 13px; min-height: 58px; }
+    .audit-time { padding-top: 3px; color: var(--muted); font: 500 10px "IBM Plex Mono", monospace; }
+    .audit-line { position: relative; }
+    .audit-line::before { content: ""; position: absolute; top: 13px; bottom: -6px; left: 11px; width: 1px; background: var(--line); }
+    .audit-item:last-child .audit-line::before { display: none; }
+    .audit-dot { position: relative; width: 23px; height: 23px; display: grid; place-items: center; border-radius: 50%; background: var(--teal-pale); color: var(--teal-deep); z-index: 1; font: 700 9px "IBM Plex Mono", monospace; }
+    .audit-dot.warn { background: var(--amber-pale); color: var(--amber); }
+    .audit-dot.alert { background: var(--coral-pale); color: var(--coral); }
+    .audit-copy { padding-bottom: 12px; min-width: 0; }
+    .audit-copy strong { display: block; font-size: 12px; }
+    .audit-copy span { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+
+    .data-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
+    .data-grid .panel + .panel, .content-grid > .panel, .inbox-layout > .panel { margin-top: 0; }
+    .field { display: grid; gap: 5px; margin-bottom: 12px; }
+    .field label { font-size: 11px; font-weight: 700; color: var(--muted); }
+    .field input, .field select { width: 100%; min-height: 38px; border: 1px solid var(--line); border-radius: 8px; padding: 0 10px; background: var(--surface-2); }
+    .field input:focus, .field select:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .row .field { flex: 1 1 140px; margin-bottom: 0; }
+    .hint { margin: 8px 0 0; color: var(--muted); font-size: 11px; }
+    .status-line { margin-top: 10px; padding: 9px 11px; border-radius: 8px; background: var(--surface-2); font-size: 12px; color: var(--muted); }
+    .status-line.ok { background: var(--teal-pale); color: var(--teal-deep); }
+    .status-line.bad { background: var(--coral-pale); color: var(--coral); }
+    .table-tabs { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 20px 12px; }
+    .table-wrap { overflow: auto; max-height: 420px; border-top: 1px solid var(--line); }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 8px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { position: sticky; top: 0; background: var(--surface-2); color: var(--muted); font-size: 11px; font-weight: 700; }
+    td { max-width: 320px; overflow-wrap: anywhere; }
+    .warn-list { margin: 8px 0 0; padding-left: 18px; font-size: 11px; color: var(--amber); max-height: 140px; overflow: auto; }
+    .downloads { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 8px; }
+    .drop { border: 1.5px dashed var(--line); border-radius: 10px; padding: 16px; text-align: center; color: var(--muted); font-size: 12px; }
+    .drop.over { border-color: var(--teal); background: var(--teal-pale); }
+    .file-btn { position: relative; overflow: hidden; }
+    .file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+    .overlay { position: fixed; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(7, 20, 17, .58); backdrop-filter: blur(5px); }
+    .overlay.open { display: flex; }
+    .runner-card { width: min(540px, 100%); max-height: calc(100vh - 40px); overflow: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
+    .runner-head { display: flex; justify-content: space-between; gap: 16px; padding: 20px 22px; border-bottom: 1px solid var(--line); }
+    .runner-head h2 { margin: 0; font-size: 18px; }
+    .runner-head p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    .close { width: 34px; height: 34px; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); color: var(--ink); cursor: pointer; }
+    .run-config { padding: 14px 22px 0; }
+    .run-steps { padding: 6px 22px 12px; }
+    .run-step { display: flex; align-items: center; gap: 12px; padding: 10px 0; color: var(--muted); }
+    .run-step .status-icon { width: 25px; height: 25px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; background: var(--surface-3); font-size: 11px; }
+    .run-step svg { width: 13px; height: 13px; }
+    .run-step strong { color: var(--ink); font-size: 12px; }
+    .run-step em { display: block; font-style: normal; font-size: 10px; color: var(--muted); }
+    .run-step .st { margin-left: auto; font: 500 10px "IBM Plex Mono", monospace; text-align: right; }
+    .run-step.running .status-icon { background: var(--amber-pale); color: var(--amber); }
+    .run-step.done .status-icon { background: var(--teal-pale); color: var(--teal-deep); }
+    .runner-foot { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 16px 22px; background: var(--surface-2); }
+    .runner-foot p { margin: 0; color: var(--muted); font-size: 11px; }
+    .ticket-card { width: min(560px, 100%); }
+    .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 40; padding: 10px 16px; border-radius: 10px; background: #102c27; color: #e8f4f0; font-size: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.25); opacity: 0; pointer-events: none; transition: opacity .2s; max-width: calc(100% - 32px); }
+    .toast.show { opacity: 1; }
+
+    @media (max-width: 1100px) {
+      .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .content-grid, .data-grid { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; gap: 6px; }
+      .flow-arrow { transform: rotate(90deg); width: 14px; margin-left: 7px; }
+    }
+    @media (max-width: 760px) {
+      .app-shell { display: block; }
+      .rail { position: fixed; inset: auto 0 0 0; z-index: 20; width: 100%; height: auto; padding: 8px max(10px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left)); border-top: 1px solid #315048; }
+      .brand-mark, .nav-label, .rail-spacer, .rail-status { display: none; }
+      .nav { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+      .nav button { flex-direction: column; justify-content: center; gap: 3px; padding: 7px 4px; font-size: 10px; }
+      .nav .count { position: absolute; top: 2px; right: 10%; margin: 0; min-width: 17px; padding: 1px 4px; font-size: 9px; }
+      .main { padding: 19px 16px 108px; }
+      .topbar { flex-direction: column; align-items: stretch; margin-bottom: 19px; }
+      .top-actions { justify-content: flex-start; }
+      h1 { font-size: 26px; }
+      .summary-grid { gap: 9px; }
+      .metric { padding: 14px; }
+      .metric strong { font-size: 22px; }
+      .case-row { grid-template-columns: 28px minmax(0, 1fr) auto; padding: 12px 15px; gap: 10px; }
+      .case-type, .chev { display: none; }
+      .panel-head { padding: 17px 16px 13px; }
+      .filters, .table-tabs { padding-left: 16px; padding-right: 16px; }
+      .panel-body { padding: 0 16px 16px; }
+      .inbox-layout { grid-template-columns: 1fr; }
+      .audit-timeline { padding: 4px 14px 20px; }
+      .audit-item { grid-template-columns: 62px 24px 1fr; gap: 9px; }
+      .runner-foot { flex-direction: column; align-items: stretch; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="rail" aria-label="Primary navigation">
+      <div class="brand-mark">
+        <div class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/><path d="M4 8.5V5a1 1 0 0 1 1-1h3.5M15.5 4H19a1 1 0 0 1 1 1v3.5M20 15.5V19a1 1 0 0 1-1 1h-3.5M8.5 20H5a1 1 0 0 1-1-1v-3.5"/></svg></div>
+        <div class="brand-copy"><strong>Care Tracker</strong><span>Women's health follow-up agent</span></div>
+      </div>
+      <div class="nav-label">Workspace</div>
+      <nav class="nav">
+        <button class="active" data-page="command" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span>Command</span><span class="count" id="navTickets"></span></button>
+        <button data-page="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v16H4z"/><path d="M4 14h4l2 3h4l2-3h4"/></svg><span>Inbox</span><span class="count" id="navInbox"></span></button>
+        <button data-page="data"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg><span>Data</span></button>
+        <button data-page="audit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5h10v16H5V9z"/><path d="M5 9h4V5M9 13h6M9 17h6"/></svg><span>Audit</span></button>
+      </nav>
+      <div class="rail-spacer"></div>
+      <div class="rail-status">
+        <div class="line"><span class="live-dot" id="modeDot"></span><strong id="modeTitle">Guardrails active</strong></div>
+        <p id="modeText">Urgent-phrase override and rule fallback run every cycle.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow" id="pageEyebrow"></p>
+          <h1 id="pageTitle">Good morning, care team</h1>
+        </div>
+        <div class="top-actions">
+          <button class="ghost-btn" id="downloadAllTop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v3h16v-3"/></svg><span>Results</span></button>
+          <button class="primary-btn" id="openRunner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 3 14 9-14 9V3z"/></svg><span>Run agent cycle</span></button>
+        </div>
+      </header>
+
+      <!-- COMMAND -->
+      <section class="page active" id="command">
+        <div class="summary-grid">
+          <article class="metric m-dead"><div class="metric-top"><span class="metric-label">Dead-ends detected</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><strong id="mDead">–</strong><small id="mDeadSub">Run a cycle to scan the clinic</small></article>
+          <article class="metric m-triage"><div class="metric-top"><span class="metric-label">Messages triaged</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M4 14h4l2 3h4l2-3h4"/></svg></span></div><strong id="mTriage">–</strong><small id="mTriageSub">Unread messages this cycle</small></article>
+          <article class="metric m-urgent"><div class="metric-top"><span class="metric-label">Urgent escalations</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="m10.3 4.2-7.5 13A2 2 0 0 0 4.5 20h15a2 2 0 0 0 1.7-2.8l-7.5-13a2 2 0 0 0-3.4 0Z"/></svg></span></div><strong id="mUrgent">–</strong><small id="mUrgentSub">Sent to the on-call clinician</small></article>
+          <article class="metric m-saved"><div class="metric-top"><span class="metric-label">Staff-minutes saved</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg></span></div><strong id="mSaved">–</strong><small id="mSavedSub">Estimate: 3 min/triage, 6 min/chart check</small></article>
+        </div>
+
+        <div class="content-grid">
+          <section class="panel" aria-labelledby="queueTitle">
+            <div class="panel-head">
+              <div><h2 id="queueTitle">Attention queue</h2><p>Open tickets, one per finding, most severe first</p></div>
+              <button class="link-btn" data-open-page="inbox">Open inbox →</button>
+            </div>
+            <div class="filters" role="group" aria-label="Filter tickets" id="queueFilters"></div>
+            <div id="queueList"></div>
+          </section>
+
+          <aside class="panel brief-card" aria-labelledby="briefTitle">
+            <div class="brief-head">
+              <div class="agent-orb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div>
+              <div><strong id="briefTitle">Agent cycle brief</strong><span id="briefMeta">No cycle run yet</span></div>
+            </div>
+            <div id="briefBody"><p class="brief-copy">Load a clinic on the <b style="color:var(--teal)">Data</b> page (the demo clinic is already loaded) and press <strong>Run agent cycle</strong>. The agent will scan every care pathway, triage unread messages and write this brief.</p></div>
+            <div class="agent-stats"><div><strong id="sChecks">–</strong><span>records checked</span></div><div><strong id="sOpen">–</strong><span>open tickets</span></div><div><strong id="sEsc">–</strong><span>escalated</span></div></div>
+            <div class="guardrail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg><span>Claude can raise urgency but never lower it: a deterministic urgent-phrase scan runs after every AI decision. If Claude is unavailable, rule-based triage takes over and the cycle still completes.</span></div>
+          </aside>
+        </div>
+
+        <section class="flow-strip" aria-label="Agent workflow">
+          <div class="flow-title"><h2>How one cycle moves</h2><span>Explainable at every step</span></div>
+          <div class="flow">
+            <div class="flow-step"><span class="flow-num">01</span><div><strong>Perceive</strong><span>Load five care tables</span></div></div><span class="flow-arrow">→</span>
+            <div class="flow-step"><span class="flow-num">02</span><div><strong>Detect dead-ends</strong><span>Rules + time thresholds</span></div></div><span class="flow-arrow">→</span>
+            <div class="flow-step"><span class="flow-num">03</span><div><strong>Triage safely</strong><span>Claude + urgent guardrail</span></div></div><span class="flow-arrow">→</span>
+            <div class="flow-step"><span class="flow-num">04</span><div><strong>Act</strong><span>Tickets, routing, escalation</span></div></div><span class="flow-arrow">→</span>
+            <div class="flow-step"><span class="flow-num">05</span><div><strong>Log &amp; brief</strong><span>Audit trail + report</span></div></div>
+          </div>
+          <div class="note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span id="flowNote">Everything runs in this tab. Data only leaves it for the Claude API calls you enable.</span></div>
+        </section>
+      </section>
+
+      <!-- INBOX -->
+      <section class="page" id="inbox">
+        <div class="inbox-layout">
+          <section class="panel">
+            <div class="panel-head"><div><h2>Clinical inbox</h2><p>Messages ranked by safe triage</p></div><span class="badge urgent" id="inboxUrgentBadge">0 urgent</span></div>
+            <div class="filters" role="group" aria-label="Filter messages" id="inboxFilters"></div>
+            <div class="message-list" id="messageList"></div>
+          </section>
+          <aside class="panel">
+            <div class="panel-head"><div><h2>Selected triage</h2><p id="detailSub">Select a message</p></div></div>
+            <div class="detail-body" id="messageDetail"><p class="hint">Triage details appear here after a cycle has run.</p></div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- DATA -->
+      <section class="page" id="data">
+        <div class="data-grid">
+          <section class="panel">
+            <div class="panel-head"><div><h2>Clinic data</h2><p>Use the demo, generate a random clinic, or bring your own tables</p></div></div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="field"><label for="clinicDate">Clinic date ("today")</label><input type="date" id="clinicDate" value="2026-10-01"></div>
+                <div class="field"><label for="seed">Random seed</label><input type="number" id="seed" value="42" min="1"></div>
+                <div class="field"><label for="size">Patients (random)</label><input type="number" id="size" value="36" min="1" max="2000"></div>
+              </div>
+              <div class="row" style="margin-top:12px">
+                <button class="ghost-btn small-btn" id="loadDemo">Load demo clinic</button>
+                <button class="ghost-btn small-btn" id="genRandom">Generate random clinic</button>
+                <button class="ghost-btn small-btn" id="loadEmpty">Empty clinic</button>
+              </div>
+              <div class="drop" id="dropZone" style="margin-top:14px">
+                <p style="margin:0 0 10px">Drop <span class="mono">patients</span>, <span class="mono">lab_orders</span>, <span class="mono">prescriptions</span>, <span class="mono">appointments</span>, <span class="mono">messages</span> (.json or .csv) here.<br>A previous <span class="mono">task_tickets.json</span> keeps tickets from being duplicated.</p>
+                <div class="row" style="justify-content:center">
+                  <label class="ghost-btn small-btn file-btn">Choose files<input type="file" id="fileInput" multiple accept=".json,.csv"></label>
+                  <label class="ghost-btn small-btn file-btn">Choose folder<input type="file" id="folderInput" webkitdirectory multiple></label>
+                </div>
+              </div>
+              <div class="status-line" id="dataStatus">Demo clinic loaded.</div>
+              <ul class="warn-list" id="dataWarnings" hidden></ul>
+              <p class="hint">Files are read in your browser. Nothing is uploaded to a server. Format: <a href="#" id="formatLink" style="color:var(--teal)">see the data format</a>.</p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-head"><div><h2>Claude reasoning</h2><p>Message triage and the cycle brief use the Claude API</p></div><span class="badge ai" id="aiBadge">rules only</span></div>
+            <div class="panel-body">
+              <div class="field"><label for="apiKey">Anthropic API key (kept in this tab's memory only)</label><input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off" spellcheck="false"></div>
+              <div class="field"><label for="modelName">Model</label><input type="text" id="modelName" value="claude-opus-5-5" spellcheck="false"></div>
+              <label class="row" style="font-size:12px;margin-bottom:12px"><input type="checkbox" id="useClaude" checked> Use Claude when a key is set (untick to force rule-based reasoning)</label>
+              <div class="row">
+                <button class="primary-btn small-btn" id="saveKey">Use this key</button>
+                <button class="ghost-btn small-btn" id="testKey">Test connection</button>
+                <button class="danger-btn small-btn" id="clearKey">Clear key</button>
+              </div>
+              <div class="status-line" id="keyStatus">No key set. The agent will use rule-based triage.</div>
+              <p class="hint">The key is never stored or written to disk. It disappears when you clear it or close the tab. Claude only receives message text, patient age and condition, and the cycle summary.</p>
+            </div>
+          </section>
+        </div>
+
+        <section class="panel" style="margin-top:16px">
+          <div class="panel-head"><div><h2>Tables</h2><p id="tablesSub">Preview of the loaded clinic</p></div></div>
+          <div class="table-tabs" id="tableTabs"></div>
+          <div class="table-wrap" id="tableView"></div>
+        </section>
+
+        <section class="panel" style="margin-top:16px">
+          <div class="panel-head"><div><h2>Download results</h2><p>The agent's outputs, plus the updated tables (triaged messages are marked read)</p></div></div>
+          <div class="panel-body downloads" id="downloads"></div>
+        </section>
+      </section>
+
+      <!-- AUDIT -->
+      <section class="page" id="audit">
+        <section class="panel">
+          <div class="panel-head"><div><h2>Cycle audit trail</h2><p>Every perception, decision, fallback and action, newest first</p></div><button class="ghost-btn small-btn" id="dlAudit">agent_audit_log.jsonl</button></div>
+          <div class="filters" role="group" aria-label="Filter audit" id="auditFilters"></div>
+          <div class="audit-timeline" id="auditList"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <!-- RUN MODAL -->
+  <div class="overlay" id="runner" role="dialog" aria-modal="true" aria-labelledby="runnerTitle">
+    <div class="runner-card">
+      <div class="runner-head"><div><h2 id="runnerTitle">Run agent cycle</h2><p id="runnerSub">perceive → detect → reason → act → log</p></div><button class="close" data-close="runner" aria-label="Close">×</button></div>
+      <div class="run-config row">
+        <div class="field"><label for="cycles">Cycles to run</label><input type="number" id="cycles" value="1" min="1" max="10"></div>
+        <div class="field"><label>Reasoning</label><input type="text" id="runMode" readonly></div>
+      </div>
+      <div class="run-steps" id="runSteps"></div>
+      <div class="runner-foot"><p id="runMessage">Ready.</p><button class="primary-btn" id="startRun">Start cycle</button></div>
+    </div>
+  </div>
+
+  <!-- TICKET MODAL -->
+  <div class="overlay" id="ticketModal" role="dialog" aria-modal="true" aria-labelledby="ticketTitle">
+    <div class="runner-card ticket-card">
+      <div class="runner-head"><div><h2 id="ticketTitle">Ticket</h2><p id="ticketSub"></p></div><button class="close" data-close="ticketModal" aria-label="Close">×</button></div>
+      <div class="detail-body" id="ticketBody" style="border-top:0"></div>
+      <div class="runner-foot"><p id="ticketFoot"></p><button class="primary-btn" id="resolveTicket">Mark resolved</button></div>
+    </div>
+  </div>
+
+  <!-- FORMAT MODAL -->
+  <div class="overlay" id="formatModal" role="dialog" aria-modal="true" aria-labelledby="formatTitle">
+    <div class="runner-card ticket-card">
+      <div class="runner-head"><div><h2 id="formatTitle">Data format</h2><p>Five tables, JSON (list of objects) or CSV (header row). JSON wins if both exist.</p></div><button class="close" data-close="formatModal" aria-label="Close">×</button></div>
+      <div class="detail-body" style="border-top:0;font-size:12px">
+        <dl>
+          <dt>patients</dt><dd class="mono">id, name, age, condition, provider</dd>
+          <dt>lab_orders</dt><dd class="mono">id, patient_id, test, ordered_date, result_date, status (pending | resulted)</dd>
+          <dt>prescriptions</dt><dd class="mono">id, patient_id, drug, ordered_date, filled_date, status (ordered | filled)</dd>
+          <dt>appointments</dt><dd class="mono">id, patient_id, date, type, note, status (completed | scheduled | cancelled)</dd>
+          <dt>messages</dt><dd class="mono">id, patient_id, received_date, read (true | false), subject, body</dd>
+        </dl>
+        <div class="rationale"><b>Rules</b><p>Dates are ISO (YYYY-MM-DD). Stalled lab: pending, no result, ordered &gt; 7 days ago. Unfilled prescription: ordered, not filled, &gt; 3 days (high after 7). Overdue follow-up: a completed note says "follow up in N weeks" (digits or one–twelve), that date has passed, and there is no scheduled appointment today or later. Unanswered message: unread, received &gt; 1 day ago. Extra columns are ignored. A single <span class="mono">clinic.json</span> holding all five tables also works.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script id="agent-core">
+/* Care Tracking Agent - core logic (no DOM).
+ *
+ * Loaded by index.html in the browser and by tests/*.mjs in Node.
+ * perceive -> detect -> reason (Claude + guardrails) -> act -> log
+ */
+(function (global) {
+  "use strict";
+
+  const DEFAULT_TODAY = "2026-10-01";
+  const DEFAULT_MODEL = "claude-opus-5-5";
+  const BUCKETS = ["administrative", "routine", "clinician_review", "urgent"];
+  const TABLES = {
+    patients: ["id", "name", "age", "condition", "provider"],
+    lab_orders: ["id", "patient_id", "test", "ordered_date", "result_date", "status"],
+    prescriptions: ["id", "patient_id", "drug", "ordered_date", "filled_date", "status"],
+    appointments: ["id", "patient_id", "date", "type", "note", "status"],
+    messages: ["id", "patient_id", "received_date", "read", "subject", "body"],
+  };
+
+  // ------------------------------------------------------------------ dates
+
+  const ISO = /^(\d{4})-(\d{2})-(\d{2})$/;
+  function parseDate(s) {
+    const m = ISO.exec(String(s || "").trim());
+    if (!m) return null;
+    const t = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+    const d = new Date(t);
+    return d.getUTCMonth() === +m[2] - 1 ? t : null; // rejects 2026-02-31
+  }
+  function daysBetween(fromIso, toIso) {
+    const a = parseDate(fromIso), b = parseDate(toIso);
+    return a === null || b === null ? null : Math.round((b - a) / 86400000);
+  }
+  function addDays(iso, n) {
+    return new Date(parseDate(iso) + n * 86400000).toISOString().slice(0, 10);
+  }
+
+  // -------------------------------------------------------------- CSV / IO
+
+  function parseCSV(text) {
+    text = String(text).replace(/^﻿/, "");
+    const rows = [];
+    let row = [], field = "", i = 0, q = false;
+    while (i < text.length) {
+      const c = text[i];
+      if (q) {
+        if (c === '"' && text[i + 1] === '"') { field += '"'; i += 2; continue; }
+        if (c === '"') { q = false; i++; continue; }
+        field += c; i++; continue;
+      }
+      if (c === '"') { q = true; i++; continue; }
+      if (c === ",") { row.push(field); field = ""; i++; continue; }
+      if (c === "\r") { i++; continue; }
+      if (c === "\n") { row.push(field); rows.push(row); row = []; field = ""; i++; continue; }
+      field += c; i++;
+    }
+    if (field !== "" || row.length) { row.push(field); rows.push(row); }
+    const nonEmpty = rows.filter(r => r.some(v => v.trim() !== ""));
+    if (!nonEmpty.length) return [];
+    const header = nonEmpty[0].map(h => h.trim().toLowerCase());
+    return nonEmpty.slice(1).map(r => {
+      const o = {};
+      header.forEach((h, j) => { o[h] = r[j] === undefined ? "" : r[j]; });
+      return o;
+    });
+  }
+
+  function toCSV(rows, columns) {
+    const cell = v => {
+      const s = v === null || v === undefined ? "" : String(v);
+      return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    return [columns.join(","), ...rows.map(r => columns.map(c => cell(r[c])).join(","))].join("\n") + "\n";
+  }
+
+  function toBool(v) {
+    if (typeof v === "boolean") return v;
+    return ["true", "1", "yes", "y", "t"].includes(String(v ?? "").trim().toLowerCase());
+  }
+
+  /** Normalise one table so JSON and CSV inputs produce identical records. */
+  function normalizeTable(name, rows, warnings) {
+    if (!Array.isArray(rows)) {
+      warnings.push(`${name}: expected a list of records, got ${typeof rows}; treated as empty.`);
+      return [];
+    }
+    const cols = TABLES[name];
+    const out = [];
+    const seen = new Set();
+    rows.forEach((raw, idx) => {
+      if (!raw || typeof raw !== "object") return;
+      const lower = {};
+      for (const k of Object.keys(raw)) lower[k.trim().toLowerCase()] = raw[k];
+      const r = {};
+      for (const c of cols) {
+        const v = lower[c];
+        r[c] = v === null || v === undefined ? "" : String(v).trim();
+      }
+      if (!r.id) { warnings.push(`${name} row ${idx + 1}: missing id, skipped.`); return; }
+      if (seen.has(r.id)) { warnings.push(`${name}: duplicate id ${r.id}, later row skipped.`); return; }
+      seen.add(r.id);
+      if (name === "patients") r.age = r.age === "" || isNaN(+r.age) ? null : +r.age;
+      if (name === "messages") r.read = toBool(lower.read);
+      for (const s of ["status"]) if (s in r) r[s] = r[s].toLowerCase();
+      for (const dc of ["ordered_date", "result_date", "filled_date", "date", "received_date"]) {
+        if (dc in r && r[dc] && parseDate(r[dc]) === null) {
+          warnings.push(`${name} ${r.id}: ${dc} "${r[dc]}" is not an ISO date (YYYY-MM-DD).`);
+        }
+      }
+      out.push(r);
+    });
+    return out;
+  }
+
+  function normalizeDataset(raw) {
+    const warnings = [];
+    const data = {};
+    for (const t of Object.keys(TABLES)) data[t] = normalizeTable(t, raw && raw[t] !== undefined ? raw[t] : [], warnings);
+    const ids = new Set(data.patients.map(p => p.id));
+    for (const t of ["lab_orders", "prescriptions", "appointments", "messages"]) {
+      for (const r of data[t]) if (!ids.has(r.patient_id)) warnings.push(`${t} ${r.id}: unknown patient_id "${r.patient_id}".`);
+    }
+    return { data, warnings };
+  }
+
+  /** files: [{name, text}] -> dataset. JSON beats CSV when both exist.
+   *  Also accepts one bundle .json holding all five tables, and an existing
+   *  task_tickets.json so idempotency carries across sessions. */
+  function loadFiles(files) {
+    const raw = {}, src = {};
+    let tickets = null;
+    const notes = [];
+    const byExt = f => (/\.json$/i.test(f.name) ? 0 : 1);
+    for (const f of [...files].sort((a, b) => byExt(a) - byExt(b))) {
+      const base = f.name.replace(/^.*[\\/]/, "").toLowerCase();
+      const stem = base.replace(/\.(json|csv)$/, "");
+      try {
+        if (base === "task_tickets.json") { tickets = JSON.parse(f.text); continue; }
+        if (/\.json$/.test(base)) {
+          const j = JSON.parse(f.text);
+          if (TABLES[stem]) { raw[stem] = j; src[stem] = "json"; }
+          else if (j && typeof j === "object" && !Array.isArray(j) && Object.keys(TABLES).some(t => t in j)) {
+            for (const t of Object.keys(TABLES)) if (t in j && !(t in raw)) { raw[t] = j[t]; src[t] = "json"; }
+          } else notes.push(`Ignored ${f.name}: not a known table.`);
+        } else if (/\.csv$/.test(base)) {
+          if (!TABLES[stem]) { notes.push(`Ignored ${f.name}: not a known table.`); continue; }
+          if (raw[stem] !== undefined) { notes.push(`${f.name} ignored: ${stem}.json takes precedence.`); continue; }
+          raw[stem] = parseCSV(f.text); src[stem] = "csv";
+        }
+      } catch (e) {
+        notes.push(`Could not parse ${f.name}: ${e.message}`);
+      }
+    }
+    const { data, warnings } = normalizeDataset(raw);
+    for (const t of Object.keys(TABLES)) if (!(t in raw)) notes.push(`${t}: no file found, treated as empty.`);
+    return { data, warnings: [...notes, ...warnings], sources: src, tickets: Array.isArray(tickets) ? tickets : null };
+  }
+
+  // --------------------------------------------------------------- detectors
+
+  const NUMBER_WORDS = { one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8,
+    nine: 9, ten: 10, eleven: 11, twelve: 12 };
+  const FOLLOW_UP = /follow[\s-]?up\s+in\s+(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)\s+weeks?/i;
+
+  function followUpWeeks(note) {
+    const m = FOLLOW_UP.exec(note || "");
+    if (!m) return null;
+    const n = /^\d+$/.test(m[1]) ? +m[1] : NUMBER_WORDS[m[1].toLowerCase()];
+    return n > 0 ? n : null;
+  }
+
+  function detectDeadEnds(data, today) {
+    const findings = [];
+    const pmap = Object.fromEntries(data.patients.map(p => [p.id, p]));
+    const who = id => (pmap[id] ? pmap[id].name : `Unknown patient ${id}`);
+
+    for (const l of data.lab_orders) {
+      const age = daysBetween(l.ordered_date, today);
+      if (l.status === "pending" && !l.result_date && age !== null && age > 7) {
+        findings.push({ finding_id: `stalled-lab:${l.id}`, kind: "stalled_lab", severity: "high",
+          patient_id: l.patient_id, patient_name: who(l.patient_id), record_id: l.id, days: age,
+          title: `Lab stalled ${age} days: ${l.test}`,
+          detail: `Ordered ${l.ordered_date}, still pending with no result.`,
+          recommended_action: "Confirm the specimen was collected; chase the lab or rebook the draw, then update the patient." });
+      }
+    }
+    for (const r of data.prescriptions) {
+      const age = daysBetween(r.ordered_date, today);
+      if (r.status === "ordered" && !r.filled_date && age !== null && age > 3) {
+        findings.push({ finding_id: `unfilled-rx:${r.id}`, kind: "unfilled_rx", severity: age > 7 ? "high" : "medium",
+          patient_id: r.patient_id, patient_name: who(r.patient_id), record_id: r.id, days: age,
+          title: `Prescription unfilled ${age} days: ${r.drug}`,
+          detail: `Ordered ${r.ordered_date}, never filled.`,
+          recommended_action: "Call the patient and pharmacy: check cost, coverage or prior-auth barriers and confirm pickup." });
+      }
+    }
+    for (const a of data.appointments) {
+      if (a.status !== "completed") continue;
+      const weeks = followUpWeeks(a.note);
+      if (!weeks || parseDate(a.date) === null) continue;
+      const due = addDays(a.date, weeks * 7);
+      const overdue = daysBetween(due, today);
+      if (overdue <= 0) continue;
+      const hasFuture = data.appointments.some(x => x.patient_id === a.patient_id && x.status === "scheduled" &&
+        parseDate(x.date) !== null && daysBetween(today, x.date) >= 0);
+      if (hasFuture) continue;
+      findings.push({ finding_id: `overdue-followup:${a.id}`, kind: "overdue_followup", severity: "medium",
+        patient_id: a.patient_id, patient_name: who(a.patient_id), record_id: a.id, days: overdue,
+        title: `Follow-up overdue ${overdue} days`,
+        detail: `Visit ${a.date} asked for follow-up in ${weeks} week${weeks > 1 ? "s" : ""} (due ${due}); nothing scheduled.`,
+        recommended_action: "Call the patient to book the follow-up visit with their provider." });
+    }
+    for (const m of data.messages) {
+      const age = daysBetween(m.received_date, today);
+      if (!m.read && age !== null && age > 1) {
+        findings.push({ finding_id: `unanswered-message:${m.id}`, kind: "unanswered_message", severity: "medium",
+          patient_id: m.patient_id, patient_name: who(m.patient_id), record_id: m.id, days: age,
+          title: `Message unanswered ${age} days: ${m.subject || "(no subject)"}`,
+          detail: `Received ${m.received_date}, still unread.`,
+          recommended_action: "Respond to the patient (see triage for routing)." });
+      }
+    }
+    return findings;
+  }
+
+  // ----------------------------------------------------------------- triage
+
+  // Deterministic safety net. Any match => urgent, regardless of the model.
+  const URGENT_PATTERNS = [
+    ["severe pain", /\bsevere(?:ly)?\s+(?:\w+\s+)?(?:pain|cramp(?:s|ing)?|abdominal pain|pelvic pain)\b/i],
+    ["unbearable pain", /\b(?:unbearable|excruciating|worst)\s+(?:\w+\s+)?(?:pain|cramps?)\b|\b(?:pain|cramps?)\s+(?:is|are)\s+(?:\w+\s+)?(?:unbearable|excruciating)\b/i],
+    ["heavy bleeding", /\b(?:heavy|very heavy|lots of|a lot of)\s+bleeding\b|\bbleeding\s+(?:has become |is |got )?(?:very )?heavy\b|\bsoak(?:ing|ed)\s+(?:through\s+)?(?:a |one |my )?(?:pad|tampon)/i],
+    ["blood clots", /\bclots?\s+(?:the size of|bigger than|larger than)\b/i],
+    ["chest pain", /\bchest\s+(?:pain|pressure|tightness)\b/i],
+    ["trouble breathing", /\b(?:trouble|difficulty|hard time|struggling)\s+breathing\b|\bcan(?:'|no)?t\s+breathe\b|\bshort(?:ness)?\s+of\s+breath\b/i],
+    ["fainting", /\bfaint(?:ed|ing)?\b|\bpass(?:ed|ing)\s+out\b|\bblack(?:ed|ing)?\s+out\b/i],
+    ["unconscious", /\bunconscious\b|\bunresponsive\b/i],
+    ["911", /\b911\b|\b999\b/],
+    ["urgent care / ER", /\b(?:going to|went to|heading to|at|in)\s+(?:the\s+)?(?:urgent care|emergency room|emergency department|ER|A&E)\b/i],
+    ["seizure", /\bseizures?\b/i],
+    ["self-harm", /\bsuicid(?:e|al)\b|\bkill myself\b|\bharm(?:ing)? myself\b|\bend my life\b/i],
+    ["reduced fetal movement", /\bbaby\s+(?:has\s*n[o']t|hasn't|isn't|is not|hasnt|stopped)\s+(?:moved|moving|kicking)\b|\b(?:no|reduced|decreased|less)\s+fetal\s+movements?\b/i],
+    ["waters broke", /\bwaters?\s+(?:has\s+|have\s+)?broke(?:n)?\b/i],
+    ["severe headache / vision", /\bsevere\s+headache\b|\bblurr(?:y|ed)\s+vision\b|\bseeing\s+(?:spots|flashes)\b/i],
+    ["high fever", /\bfever\s+(?:of\s+)?(?:10[2-9]|39\.[5-9]|4[0-2])/i],
+  ];
+
+  const RULE_PATTERNS = {
+    clinician_review: [
+      ["bleeding / spotting", /\bbleed(?:ing)?\b|\bspotting\b/i],
+      ["side effect", /\bside[\s-]?effects?\b|\breaction\b|\brash\b|\bhives\b/i],
+      ["pain", /\bpain(?:ful)?\b|\bcramp(?:s|ing)?\b|\bheadaches?\b/i],
+      ["missed dose", /\bmiss(?:ed)?\s+(?:\w+\s+)?(?:dose|doses|pill|pills)\b/i],
+      ["results question", /\b(?:test|lab)\s+results?\b|\bresults?\s+(?:came|posted|back)\b/i],
+      ["symptom change", /\bsymptoms?\b|\bnausea\b|\bvomit(?:ing)?\b|\bdizz(?:y|iness)\b|\bhot flash(?:es)?\b|\bmood\b|\banxi(?:ety|ous)\b|\bdepress(?:ed|ion)\b|\bfever\b|\bdischarge\b|\bswelling\b/i],
+      ["pregnancy", /\bpregnan(?:t|cy)\b|\bpositive test\b|\bmissed (?:my )?period\b|\bcontractions?\b/i],
+      ["medication change", /\b(?:stop|change|switch|increase|decrease)\s+(?:my\s+)?(?:\w+\s+)?(?:medication|dose|meds|pill|patch)\b|\bshould i (?:stop|change|keep taking)\b/i],
+    ],
+    administrative: [
+      ["billing / insurance", /\b(?:bill|billing|invoice|cost|price|charge|copay|co-pay|insurance|payment|pay)\b/i],
+      ["paperwork / records", /\b(?:form|forms|paperwork|records|letter|fmla|work note|sick note|portal|password|login)\b/i],
+      ["logistics", /\b(?:park|parking|address|directions|hours|fax)\b/i],
+      ["reschedule / cancel", /\b(?:reschedule|cancel|change (?:my )?appointment|move (?:my )?appointment)\b/i],
+    ],
+    routine: [
+      ["refill", /\brefills?\b|\brenew(?:al)?\b/i],
+      ["scheduling", /\bschedul(?:e|ing)\b|\bbook\b|\bappointment\b/i],
+      ["preparation", /\bfast(?:ing)?\b|\bprep(?:are|aration)?\b|\bbefore my (?:visit|scan|test|appointment)\b/i],
+      ["thanks / update", /\bthank(?:s| you)\b|\bjust (?:an )?update\b|\bfeeling (?:much )?better\b/i],
+    ],
+  };
+
+  function urgentSignals(text) {
+    return URGENT_PATTERNS.filter(([, re]) => re.test(text)).map(([label]) => label);
+  }
+
+  function messageText(m) { return `${m.subject || ""}\n${m.body || ""}`; }
+
+  function ruleTriage(m) {
+    const text = messageText(m);
+    const urgent = urgentSignals(text);
+    if (urgent.length) {
+      return { bucket: "urgent", confidence: 0.95, signal_phrases: urgent,
+        rationale: `Urgent-phrase rule matched: ${urgent.join(", ")}.`,
+        suggested_next_step: "On-call clinician to contact the patient now." };
+    }
+    for (const bucket of ["clinician_review", "administrative", "routine"]) {
+      const hits = RULE_PATTERNS[bucket].filter(([, re]) => re.test(text)).map(([l]) => l);
+      if (hits.length) {
+        return { bucket, confidence: Math.min(0.9, 0.6 + 0.1 * hits.length), signal_phrases: hits,
+          rationale: `Rule match (${hits.join(", ")}).`, suggested_next_step: NEXT_STEP[bucket] };
+      }
+    }
+    return { bucket: "routine", confidence: 0.4, signal_phrases: [],
+      rationale: "No specific signal phrases; defaulted to routine.", suggested_next_step: NEXT_STEP.routine };
+  }
+
+  const NEXT_STEP = {
+    administrative: "Front desk / billing to reply within 2 business days.",
+    routine: "Care coordinator to reply within 1 business day.",
+    clinician_review: "Clinician to review today and reply or call the patient.",
+    urgent: "On-call clinician to contact the patient now.",
+  };
+  const TEAM = { administrative: "admin_team", routine: "admin_team", clinician_review: "clinical_team", urgent: "clinical_team" };
+  const BUCKET_SEVERITY = { urgent: "urgent", clinician_review: "high", routine: "medium", administrative: "low" };
+
+  /** Validate a model triage result. Returns a cleaned object or null. */
+  function validateTriage(r) {
+    if (!r || typeof r !== "object") return null;
+    if (!BUCKETS.includes(r.bucket)) return null;
+    const c = Number(r.confidence);
+    if (!isFinite(c) || c < 0 || c > 1) return null;
+    if (!Array.isArray(r.signal_phrases) || typeof r.rationale !== "string") return null;
+    return { bucket: r.bucket, confidence: c, signal_phrases: r.signal_phrases.map(String).slice(0, 8),
+      rationale: r.rationale.slice(0, 400),
+      suggested_next_step: typeof r.suggested_next_step === "string" ? r.suggested_next_step.slice(0, 300) : NEXT_STEP[r.bucket] };
+  }
+
+  /** Apply the non-negotiable guardrail: the model may escalate, never de-escalate. */
+  function applyGuardrail(m, proposed, source) {
+    const signals = urgentSignals(messageText(m));
+    const result = { ...proposed, source, ai_bucket: source === "claude" ? proposed.bucket : null, override: false, urgent_signals: signals };
+    if (signals.length && proposed.bucket !== "urgent") {
+      result.bucket = "urgent";
+      result.override = true;
+      result.rationale = `Safety override: urgent phrase(s) "${signals.join('", "')}" matched, so ` +
+        `${source === "claude" ? "Claude's" : "the rule"} "${proposed.bucket}" classification was raised to urgent. ` +
+        `Original rationale: ${proposed.rationale}`;
+      result.suggested_next_step = NEXT_STEP.urgent;
+    }
+    result.team = TEAM[result.bucket];
+    result.escalated = result.bucket === "urgent";
+    return result;
+  }
+
+  // ------------------------------------------------------------ Claude API
+
+  const TRIAGE_SCHEMA = {
+    type: "object",
+    properties: {
+      bucket: { type: "string", enum: BUCKETS },
+      confidence: { type: "number" },
+      signal_phrases: { type: "array", items: { type: "string" } },
+      rationale: { type: "string" },
+      suggested_next_step: { type: "string" },
+    },
+    required: ["bucket", "confidence", "signal_phrases", "rationale", "suggested_next_step"],
+    additionalProperties: false,
+  };
+
+  const BRIEF_SCHEMA = {
+    type: "object",
+    properties: {
+      headline: { type: "string" },
+      workload: { type: "string" },
+      top_risks: { type: "array", items: { type: "string" } },
+      next_actions: { type: "array", items: { type: "string" } },
+    },
+    required: ["headline", "workload", "top_risks", "next_actions"],
+    additionalProperties: false,
+  };
+
+  const TRIAGE_SYSTEM = `You triage patient portal messages for a women's health clinic \
+(reproductive continuum: menstrual health, fertility, pregnancy, postpartum, perimenopause and menopause).
+
+Classify the message into exactly one bucket:
+- administrative: billing, insurance, forms, records, logistics, rescheduling. No clinical content.
+- routine: refills, scheduling, preparation questions, thanks or updates where nothing clinical needs a decision.
+- clinician_review: a clinical question or symptom that a clinician should look at today but that is not an emergency.
+- urgent: possible emergency or time-critical risk (e.g. heavy bleeding, severe pain, chest pain, trouble breathing, \
+fainting, reduced fetal movement, severe headache or vision changes in pregnancy, self-harm, going to urgent care/ER).
+
+When unsure between two buckets, choose the more clinically cautious one.
+confidence is 0 to 1. signal_phrases are short exact quotes from the message that drove the decision.
+rationale is one plain-language sentence. suggested_next_step is one short action for clinic staff.`;
+
+  const BRIEF_SYSTEM = `You write the cycle brief for the care team of a women's health clinic. You get JSON describing \
+what the care-tracking agent found this cycle. Write plain, calm, specific language a charge nurse can act on in a minute. \
+headline: one sentence. workload: one or two sentences with the key counts. top_risks: up to 4 items, most important first, \
+naming patients and why. next_actions: up to 5 concrete actions with the owning team. Only use facts from the JSON.`;
+
+  class ClaudeError extends Error {
+    constructor(message, status) { super(message); this.status = status; }
+  }
+
+  /** Minimal Claude Messages API client over fetch (browser or Node 18+). */
+  function claudeClient({ apiKey, model = DEFAULT_MODEL, fetchImpl, timeoutMs = 60000 }) {
+    const f = fetchImpl || (typeof fetch !== "undefined" ? fetch.bind(global) : null);
+    let useFallbacks = true;
+
+    async function call({ system, user, schema, maxTokens = 4000, effort = "low" }) {
+      const body = {
+        model, max_tokens: maxTokens, system,
+        messages: [{ role: "user", content: user }],
+        output_config: { effort, format: { type: "json_schema", schema } },
+      };
+      const headers = {
+        "content-type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      };
+      if (useFallbacks) {
+        body.fallbacks = "default";
+        headers["anthropic-beta"] = "server-side-fallback-2026-07-01";
+      }
+      const ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(() => ctrl.abort(), timeoutMs) : null;
+      let res, json;
+      try {
+        res = await f("https://api.anthropic.com/v1/messages", {
+          method: "POST", headers, body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined,
+        });
+        json = await res.json().catch(() => null);
+      } catch (e) {
+        throw new ClaudeError(e.name === "AbortError" ? "request timed out" : `network error: ${e.message}`, 0);
+      } finally {
+        if (timer) clearTimeout(timer);
+      }
+      if (!res.ok) {
+        const msg = (json && json.error && json.error.message) || `HTTP ${res.status}`;
+        if (res.status === 400 && useFallbacks && /fallback/i.test(msg)) {
+          useFallbacks = false; // account/platform without server-side fallbacks: retry plainly
+          return call({ system, user, schema, maxTokens, effort });
+        }
+        throw new ClaudeError(`Claude API ${res.status}: ${msg}`, res.status);
+      }
+      if (json.stop_reason === "refusal") throw new ClaudeError("model declined the request", 200);
+      if (json.stop_reason === "max_tokens") throw new ClaudeError("response truncated (max_tokens)", 200);
+      const text = (json.content || []).filter(b => b.type === "text").map(b => b.text).join("");
+      try { return { data: JSON.parse(text), model: json.model }; }
+      catch { throw new ClaudeError("response was not valid JSON", 200); }
+    }
+
+    return {
+      name: "claude", model,
+      async triage(message, patient) {
+        const user = JSON.stringify({
+          patient: patient ? { age: patient.age, condition: patient.condition } : null,
+          message: { subject: message.subject, body: message.body, received_date: message.received_date },
+        });
+        return (await call({ system: TRIAGE_SYSTEM, user, schema: TRIAGE_SCHEMA })).data;
+      },
+      async brief(summary) {
+        return (await call({ system: BRIEF_SYSTEM, user: JSON.stringify(summary), schema: BRIEF_SCHEMA, maxTokens: 6000 })).data;
+      },
+    };
+  }
+
+  // ------------------------------------------------------------ the agent
+
+  const STAFF_MINUTES = { triage: 3, dead_end: 6, brief: 10 };
+  const SEV_ORDER = { urgent: 0, high: 1, medium: 2, low: 3 };
+
+  function isoNow() { return new Date().toISOString(); }
+
+  async function mapLimit(items, limit, fn) {
+    const out = new Array(items.length);
+    let next = 0;
+    async function worker() { while (next < items.length) { const i = next++; out[i] = await fn(items[i], i); } }
+    await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+    return out;
+  }
+
+  function ruleBrief(s) {
+    const top = s.top_items.slice(0, 4).map(t => `${t.patient_name}: ${t.title} (${t.severity})`);
+    const actions = [];
+    if (s.triage.urgent) actions.push(`clinical_team: call back ${s.triage.urgent} urgent message${s.triage.urgent > 1 ? "s" : ""} now.`);
+    if (s.by_kind.stalled_lab) actions.push(`clinical_team: chase ${s.by_kind.stalled_lab} stalled lab${s.by_kind.stalled_lab > 1 ? "s" : ""}.`);
+    if (s.by_kind.unfilled_rx) actions.push(`admin_team: call patients about ${s.by_kind.unfilled_rx} unfilled prescription${s.by_kind.unfilled_rx > 1 ? "s" : ""}.`);
+    if (s.by_kind.overdue_followup) actions.push(`admin_team: book ${s.by_kind.overdue_followup} overdue follow-up${s.by_kind.overdue_followup > 1 ? "s" : ""}.`);
+    if (s.triage.clinician_review) actions.push(`clinical_team: review ${s.triage.clinician_review} clinical message${s.triage.clinician_review > 1 ? "s" : ""} today.`);
+    return {
+      headline: s.dead_ends + s.triage.total === 0
+        ? "No stalled care or unread messages this cycle."
+        : `${s.dead_ends} dead-end${s.dead_ends === 1 ? "" : "s"} and ${s.triage.total} message${s.triage.total === 1 ? "" : "s"} triaged; ${s.triage.urgent} urgent.`,
+      workload: `${s.patients} patients scanned. ${s.tickets_opened} new tickets, ${s.tickets_reused} already open; ` +
+        `${s.open_clinical} with clinical_team and ${s.open_admin} with admin_team.`,
+      top_risks: top.length ? top : ["None."],
+      next_actions: actions.length ? actions : ["No action needed."],
+    };
+  }
+
+  /**
+   * Run one perceive -> detect -> reason -> act -> log cycle.
+   * state: { data, tickets, audit, cycle } (mutated: messages marked read, tickets/audit appended)
+   * opts: { today, model (claude client or mock, or null for rules), onStep(phase, info) }
+   */
+  async function runCycle(state, opts = {}) {
+    const today = opts.today || DEFAULT_TODAY;
+    const model = opts.model || null;
+    const step = opts.onStep || (() => {});
+    state.tickets = state.tickets || [];
+    state.audit = state.audit || [];
+    state.cycle = (state.cycle || 0) + 1;
+    const cycle = state.cycle;
+    const log = (phase, event, message, extra) => {
+      const e = { ts: isoNow(), cycle, phase, event, message, ...(extra ? { data: extra } : {}) };
+      state.audit.push(e);
+      return e;
+    };
+    const data = state.data;
+
+    // PERCEIVE
+    step("perceive", "running");
+    const counts = Object.fromEntries(Object.keys(TABLES).map(t => [t, (data[t] || []).length]));
+    log("perceive", "cycle_started", `Cycle ${cycle} started for clinic date ${today} using ${model ? `${model.name} (${model.model})` : "rule-based reasoning"}.`);
+    log("perceive", "data_loaded", `Loaded ${counts.patients} patients, ${counts.lab_orders} lab orders, ${counts.prescriptions} prescriptions, ` +
+      `${counts.appointments} appointments, ${counts.messages} messages.`, counts);
+    if (opts.warnings && opts.warnings.length) log("perceive", "data_warnings", `${opts.warnings.length} data warning(s) found during validation.`, { warnings: opts.warnings.slice(0, 50) });
+    step("perceive", "done", `${counts.patients} patients`);
+
+    // DETECT
+    step("detect", "running");
+    const findings = detectDeadEnds(data, today);
+    const byKind = {};
+    for (const f of findings) byKind[f.kind] = (byKind[f.kind] || 0) + 1;
+    log("detect", "dead_ends_detected", findings.length
+      ? `${findings.length} dead-end(s): ${Object.entries(byKind).map(([k, n]) => `${n} ${k.replace(/_/g, " ")}`).join(", ")}.`
+      : "No dead-ends detected.", { by_kind: byKind, finding_ids: findings.map(f => f.finding_id) });
+    step("detect", "done", `${findings.length} found`);
+
+    // REASON: triage every unread message
+    step("reason", "running");
+    const pmap = Object.fromEntries(data.patients.map(p => [p.id, p]));
+    const unread = data.messages.filter(m => !m.read);
+    let aiAvailable = !!model, fallbackReason = model ? null : "no model configured (rule-based mode)";
+    if (!model) log("reason", "fallback", "Claude not configured; using rule-based triage for all messages.");
+    const triaged = await mapLimit(unread, 4, async m => {
+      let proposed = null, source = "rules", error = null;
+      if (aiAvailable) {
+        try {
+          proposed = validateTriage(await model.triage(m, pmap[m.patient_id]));
+          if (proposed) source = "claude";
+          else error = "invalid response schema";
+        } catch (e) {
+          error = e.message || String(e);
+          if (e.status === 401 || e.status === 403) { aiAvailable = false; fallbackReason = error; }
+        }
+        if (!proposed) log("reason", "fallback", `Message ${m.id}: Claude unavailable (${error}); used rule-based triage.`);
+      }
+      if (!proposed) proposed = ruleTriage(m);
+      const t = applyGuardrail(m, proposed, source);
+      t.message_id = m.id;
+      t.patient_id = m.patient_id;
+      log("reason", t.override ? "safety_override" : "message_triaged",
+        t.override
+          ? `Message ${m.id}: ${source} said "${proposed.bucket}", urgent-phrase guardrail raised it to URGENT (${t.urgent_signals.join(", ")}).`
+          : `Message ${m.id} -> ${t.bucket} (${source}, confidence ${t.confidence.toFixed(2)}): ${t.rationale}`,
+        { message_id: m.id, bucket: t.bucket, source, ai_bucket: t.ai_bucket, override: t.override, confidence: t.confidence, signal_phrases: t.signal_phrases });
+      return t;
+    });
+    if (fallbackReason && model) log("reason", "ai_disabled", `Claude disabled for the rest of this cycle: ${fallbackReason}.`);
+    const triage = { total: triaged.length, administrative: 0, routine: 0, clinician_review: 0, urgent: 0,
+      overrides: triaged.filter(t => t.override).length, by_claude: triaged.filter(t => t.source === "claude").length,
+      by_rules: triaged.filter(t => t.source === "rules").length };
+    for (const t of triaged) triage[t.bucket]++;
+    step("reason", "done", `${triage.total} triaged, ${triage.urgent} urgent`);
+
+    // ACT
+    step("act", "running");
+    const tmap = Object.fromEntries(triaged.map(t => [t.message_id, t]));
+    const items = findings.slice();
+    for (const t of triaged) {
+      if (!items.some(f => f.finding_id === `unanswered-message:${t.message_id}`)) {
+        const m = data.messages.find(x => x.id === t.message_id);
+        items.push({ finding_id: `new-message:${m.id}`, kind: "new_message", severity: "low",
+          patient_id: m.patient_id, patient_name: pmap[m.patient_id] ? pmap[m.patient_id].name : `Unknown patient ${m.patient_id}`,
+          record_id: m.id, days: daysBetween(m.received_date, today),
+          title: `New message: ${m.subject || "(no subject)"}`, detail: `Received ${m.received_date}.`, recommended_action: "" });
+      }
+    }
+    let opened = 0, reused = 0;
+    const cycleTickets = [];
+    for (const f of items) {
+      const t = tmap[f.record_id] && (f.kind === "unanswered_message" || f.kind === "new_message") ? tmap[f.record_id] : null;
+      const team = t ? t.team : (f.kind === "stalled_lab" ? "clinical_team" : "admin_team");
+      const severity = t ? (SEV_ORDER[BUCKET_SEVERITY[t.bucket]] < SEV_ORDER[f.severity] ? BUCKET_SEVERITY[t.bucket] : f.severity) : f.severity;
+      const existing = state.tickets.find(x => x.finding_id === f.finding_id && x.status === "open");
+      if (existing) {
+        reused++;
+        existing.last_seen_cycle = cycle;
+        if (f.days !== undefined) existing.days = f.days;
+        cycleTickets.push(existing);
+        continue;
+      }
+      const ticket = {
+        ticket_id: `T${String(state.tickets.length + 1).padStart(4, "0")}`,
+        finding_id: f.finding_id, kind: f.kind, status: "open",
+        patient_id: f.patient_id, patient_name: f.patient_name, record_id: f.record_id,
+        severity, team, escalated: !!(t && t.escalated),
+        title: f.title, detail: f.detail,
+        recommended_action: t ? t.suggested_next_step : f.recommended_action,
+        triage: t ? { bucket: t.bucket, confidence: t.confidence, source: t.source, ai_bucket: t.ai_bucket,
+          override: t.override, signal_phrases: t.signal_phrases, urgent_signals: t.urgent_signals, rationale: t.rationale } : null,
+        days: f.days, opened_cycle: cycle, last_seen_cycle: cycle, opened_at: isoNow(),
+      };
+      state.tickets.push(ticket);
+      cycleTickets.push(ticket);
+      opened++;
+      log("act", ticket.escalated ? "escalated" : "ticket_opened",
+        `${ticket.escalated ? "ESCALATED to on-call clinician: " : ""}${ticket.ticket_id} opened for ${ticket.patient_name} -> ${team} [${severity}]: ${ticket.title}`,
+        { ticket_id: ticket.ticket_id, finding_id: f.finding_id, team, severity });
+    }
+    if (reused) log("act", "tickets_reused", `${reused} finding(s) already had an open ticket; no duplicates created.`);
+    for (const m of unread) m.read = true;
+    if (unread.length) log("act", "messages_marked_read", `Marked ${unread.length} triaged message(s) as read.`, { message_ids: unread.map(m => m.id) });
+    step("act", "done", `${opened} opened, ${reused} reused`);
+
+    // BRIEF
+    step("brief", "running");
+    const open = state.tickets.filter(x => x.status === "open");
+    const sorted = cycleTickets.slice().sort((a, b) => SEV_ORDER[a.severity] - SEV_ORDER[b.severity] || (b.days || 0) - (a.days || 0));
+    const summary = {
+      clinic_date: today, patients: counts.patients, dead_ends: findings.length, by_kind: byKind, triage,
+      tickets_opened: opened, tickets_reused: reused,
+      open_clinical: open.filter(x => x.team === "clinical_team").length, open_admin: open.filter(x => x.team === "admin_team").length,
+      top_items: sorted.slice(0, 8).map(x => ({ patient_name: x.patient_name, title: x.title, severity: x.severity, team: x.team,
+        escalated: x.escalated, triage_bucket: x.triage ? x.triage.bucket : null })),
+    };
+    let brief = null, briefSource = "rules";
+    if (aiAvailable && model && model.brief) {
+      try {
+        const b = await model.brief(summary);
+        if (b && typeof b.headline === "string" && Array.isArray(b.top_risks) && Array.isArray(b.next_actions)) { brief = b; briefSource = "claude"; }
+        else log("brief", "fallback", "Claude brief had an invalid shape; used the template brief.");
+      } catch (e) { log("brief", "fallback", `Claude brief failed (${e.message}); used the template brief.`); }
+    }
+    if (!brief) brief = ruleBrief(summary);
+    brief.source = briefSource;
+    brief.text = [brief.headline, brief.workload, "Top risks:", ...brief.top_risks.map(r => `- ${r}`), "Next actions:", ...brief.next_actions.map(a => `- ${a}`)].join("\n");
+    log("brief", "brief_written", `Cycle brief (${briefSource}): ${brief.headline}`);
+    step("brief", "done", briefSource);
+
+    // LOG / REPORT
+    const severity = { urgent: 0, high: 0, medium: 0, low: 0 };
+    for (const x of cycleTickets) severity[x.severity]++;
+    const minutes = STAFF_MINUTES.triage * triage.total + STAFF_MINUTES.dead_end * findings.length + (findings.length + triage.total ? STAFF_MINUTES.brief : 0);
+    const report = {
+      generated_at: isoNow(), cycle, clinic_date: today,
+      reasoning: { mode: model ? "claude" : "rules", model: model ? model.model : null, ai_available_at_end: aiAvailable, fallback_reason: fallbackReason },
+      counts: { ...counts, dead_ends: findings.length, by_kind: byKind, unread_messages_triaged: triage.total },
+      severity_breakdown: severity,
+      triage_summary: triage,
+      tickets: { opened, reused, open_total: open.length, escalated_open: open.filter(x => x.escalated).length },
+      staff_minutes_saved_estimate: minutes,
+      brief,
+      warnings: opts.warnings || [],
+    };
+    log("log", "cycle_completed", `Cycle ${cycle} complete: ${findings.length} dead-ends, ${triage.total} messages triaged (${triage.urgent} urgent), ` +
+      `${opened} tickets opened, ${reused} reused.`, { tickets_opened: opened, tickets_reused: reused });
+    state.lastReport = report;
+    state.lastTriage = triaged;
+    state.lastFindings = findings;
+    return report;
+  }
+
+  // ----------------------------------------------------- random clinic
+
+  function rng(seed) {
+    let a = (seed >>> 0) || 1;
+    const next = () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+    return {
+      next, int: (lo, hi) => lo + Math.floor(next() * (hi - lo + 1)),
+      pick: arr => arr[Math.floor(next() * arr.length)], chance: p => next() < p,
+    };
+  }
+
+  const FIRST = ["Amara", "Bianca", "Chloe", "Dana", "Esi", "Fatima", "Grace", "Hana", "Imani", "Jade", "Keisha", "Lena",
+    "Maya", "Nadia", "Olivia", "Priya", "Rosa", "Sofia", "Tamar", "Uma", "Valeria", "Wanjiru", "Ximena", "Yara", "Zainab", "Aisha", "Mei", "Ingrid"];
+  const LAST = ["Okafor", "Nguyen", "Garcia", "Haddad", "Mensah", "Kowalski", "Patel", "Rossi", "Silva", "Tanaka", "Uwimana",
+    "Walsh", "Cohen", "Diallo", "Eriksen", "Fernandes", "Ito", "Johansson", "Kim", "Lopez", "Mwangi", "Novak"];
+  const PROVIDERS = ["Dr. L. Chen", "Dr. A. Mensah", "Dr. R. Alvarez", "NP K. Brooks", "Dr. S. Iyer"];
+  const CONDITIONS = [
+    { c: "PCOS", age: [19, 38], labs: ["Hormone panel (LH, FSH, testosterone)", "HbA1c", "Fasting lipid panel"], rx: ["Metformin 500mg", "Combined oral contraceptive", "Spironolactone 50mg"] },
+    { c: "endometriosis", age: [21, 44], labs: ["CA-125", "CBC", "Pelvic ultrasound"], rx: ["Norethindrone 5mg", "Naproxen 500mg", "Dienogest 2mg"] },
+    { c: "prenatal care (second trimester)", age: [20, 41], labs: ["Glucose challenge test", "CBC", "Anatomy ultrasound", "Urine culture"], rx: ["Prenatal vitamin", "Ferrous sulfate 325mg", "Low-dose aspirin 81mg"] },
+    { c: "prenatal care (third trimester)", age: [20, 42], labs: ["Group B strep culture", "CBC", "Growth ultrasound"], rx: ["Prenatal vitamin", "Ferrous sulfate 325mg"] },
+    { c: "postpartum (6 weeks)", age: [20, 42], labs: ["CBC", "TSH", "Fasting glucose"], rx: ["Sertraline 50mg", "Ibuprofen 600mg", "Norethindrone 0.35mg"] },
+    { c: "fertility evaluation", age: [26, 42], labs: ["AMH", "Day-3 FSH and estradiol", "Hysterosalpingogram", "Semen analysis (partner)"], rx: ["Letrozole 2.5mg", "Clomiphene 50mg"] },
+    { c: "perimenopause", age: [42, 54], labs: ["Hormone panel (FSH, LH, estradiol)", "TSH", "Lipid panel"], rx: ["Micronized progesterone 100mg", "Estradiol patch 0.05mg", "Gabapentin 300mg"] },
+    { c: "menopause (on HRT)", age: [50, 64], labs: ["Mammogram", "DEXA scan", "Lipid panel"], rx: ["Estradiol patch 0.05mg", "Micronized progesterone 100mg", "Vaginal estradiol cream"] },
+    { c: "uterine fibroids", age: [30, 52], labs: ["CBC", "Ferritin", "Pelvic ultrasound"], rx: ["Tranexamic acid 650mg", "Ferrous sulfate 325mg"] },
+    { c: "contraception management", age: [17, 45], labs: ["Pap smear / HPV co-test", "STI screen"], rx: ["Combined oral contraceptive", "Depo-Provera injection"] },
+    { c: "gestational diabetes", age: [24, 42], labs: ["HbA1c", "Fasting glucose", "Growth ultrasound"], rx: ["Insulin glargine", "Metformin 500mg", "Glucose test strips"] },
+    { c: "hypothyroidism in pregnancy", age: [22, 40], labs: ["TSH", "Free T4"], rx: ["Levothyroxine 75mcg"] },
+  ];
+  const FOLLOW_NOTES = [
+    w => `Follow up in ${w} weeks to review symptoms and results.`,
+    w => `Discussed plan. Follow-up in ${w} weeks.`,
+    w => `Started new medication; follow up in ${["one", "two", "three", "four", "five", "six"][w - 1] || w} week${w > 1 ? "s" : ""} to check tolerance.`,
+    w => `Ultrasound reviewed with patient. Follow up in ${w} weeks.`,
+  ];
+  const PLAIN_NOTES = ["Routine visit, no concerns. Return as needed.", "Annual exam completed.", "Counselled on options; patient will call to decide.",
+    "Vitals normal. Continue current plan.", "Education provided, questions answered."];
+
+  const MESSAGE_TEMPLATES = {
+    urgent: [
+      ["Bleeding", "The bleeding has become very heavy since last night and I feel faint."],
+      ["Need help", "I'm soaking a pad every hour and passing big clots."],
+      ["Pain", "I have severe pain on my right side, worse than anything before."],
+      ["Chest", "Since starting the patch I've had chest pain on and off today."],
+      ["breathing", "Having trouble breathing after the injection this morning."],
+      ["Going in", "Cramps are unbearable, I'm going to urgent care tonight unless someone calls."],
+      ["Baby", "The baby hasn't moved since yesterday evening, is that ok?"],
+      ["headache", "34 weeks, severe headache and blurry vision since this morning."],
+      ["fainted at work", "I fainted at work today, still a bit dizzy."],
+      ["question", "Quick question - my partner had to call 911 last night when I collapsed, what should I do now?"],
+      ["Feeling low", "I've been having thoughts of harming myself since the baby came."],
+    ],
+    clinician_review: [
+      ["Spotting", "I've had some light spotting between periods since starting the new pill."],
+      ["Side effects", "The progesterone is making me dizzy and nauseous at night. Should I keep taking it?"],
+      ["Results", "I saw my test results in the portal. Should I change anything before my visit?"],
+      ["Missed pills", "I missed two pills while traveling. Do I need backup contraception?"],
+      ["Hot flashes", "Hot flashes are worse even with the patch, waking me up every night."],
+      ["Rash", "I have an itchy rash on my arms since I started letrozole."],
+      ["Mood", "My mood has been really low and anxious the last few weeks."],
+      ["Positive test", "Got a positive pregnancy test this morning! What do I do next?"],
+    ],
+    administrative: [
+      ["Cost question", "Hi, how much will my ultrasound cost with my insurance?"],
+      ["Billing", "I got a bill I think was already paid by my insurance. Can someone check?"],
+      ["Forms", "Can you fill out my FMLA paperwork? I'll drop it off Monday."],
+      ["Records", "Please send my records to my new OB."],
+      ["Reschedule", "I need to reschedule Thursday's appointment, something came up at work."],
+      ["Parking", "Where do I park for the new clinic location?"],
+    ],
+    routine: [
+      ["Refill", "Can I get a refill of my prenatal vitamins sent to the same pharmacy?"],
+      ["Scheduling", "Can someone help me schedule the lab the doctor ordered?"],
+      ["Prep", "Do I need to be fasting before my blood draw next week?"],
+      ["Thanks", "Thank you all for the help last week, feeling much better."],
+      ["Update", "Just an update, I picked up the prescription today."],
+    ],
+  };
+
+  /** Generate a random clinic. Returns { data, truth } where truth holds the
+   *  template bucket of each message (for testing only - never exported). */
+  function generateClinic(seed = Date.now() % 100000, today = DEFAULT_TODAY, size = null) {
+    const r = rng(seed);
+    const n = size || r.int(24, 48);
+    const data = { patients: [], lab_orders: [], prescriptions: [], appointments: [], messages: [] };
+    const truth = { message_bucket: {} };
+    let L = 0, R = 0, A = 0, M = 0;
+    const id = (p, k) => `${p}${String(k).padStart(3, "0")}`;
+    const used = new Set();
+    for (let i = 1; i <= n; i++) {
+      const cond = r.pick(CONDITIONS);
+      let name; do { name = `${r.pick(FIRST)} ${r.pick(LAST)}`; } while (used.has(name)); used.add(name);
+      const pid = id("P", i);
+      const provider = r.pick(PROVIDERS);
+      data.patients.push({ id: pid, name, age: r.int(cond.age[0], cond.age[1]), condition: cond.c, provider });
+
+      for (let k = r.int(0, 3); k > 0; k--) {
+        const ago = r.chance(0.12) ? r.pick([7, 8]) : r.int(0, 30); // include boundary cases
+        const ordered = addDays(today, -ago);
+        const resulted = ago > 0 && r.chance(0.55);
+        data.lab_orders.push({ id: id("L", ++L), patient_id: pid, test: r.pick(cond.labs), ordered_date: ordered,
+          result_date: resulted ? addDays(ordered, Math.min(ago, r.int(1, 6))) : "", status: resulted ? "resulted" : "pending" });
+      }
+      for (let k = r.int(0, 2); k > 0; k--) {
+        const ago = r.chance(0.15) ? r.pick([3, 4, 7, 8]) : r.int(0, 20);
+        const ordered = addDays(today, -ago);
+        const filled = ago > 0 && r.chance(0.6);
+        data.prescriptions.push({ id: id("R", ++R), patient_id: pid, drug: r.pick(cond.rx), ordered_date: ordered,
+          filled_date: filled ? addDays(ordered, Math.min(ago, r.int(0, 3))) : "", status: filled ? "filled" : "ordered" });
+      }
+      for (let k = r.int(1, 3); k > 0; k--) {
+        const ago = r.int(5, 90);
+        const wantsFollow = r.chance(0.55);
+        const weeks = r.int(1, 6);
+        data.appointments.push({ id: id("A", ++A), patient_id: pid, date: addDays(today, -ago), type: r.pick(["visit", "telehealth", "procedure", "ultrasound"]),
+          note: wantsFollow ? r.pick(FOLLOW_NOTES)(weeks) : r.pick(PLAIN_NOTES), status: r.chance(0.9) ? "completed" : "cancelled" });
+      }
+      if (r.chance(0.35)) {
+        const ahead = r.chance(0.15) ? 0 : r.int(1, 30);
+        data.appointments.push({ id: id("A", ++A), patient_id: pid, date: addDays(today, ahead), type: "visit", note: "", status: "scheduled" });
+      }
+      if (r.chance(0.08)) { // stale scheduled appointment in the past (does not count as future)
+        data.appointments.push({ id: id("A", ++A), patient_id: pid, date: addDays(today, -r.int(1, 10)), type: "visit", note: "", status: "scheduled" });
+      }
+      for (let k = r.int(0, 2); k > 0; k--) {
+        const bucket = r.chance(0.18) ? "urgent" : r.pick(["clinician_review", "administrative", "routine"]);
+        const [subject, body] = r.pick(MESSAGE_TEMPLATES[bucket]);
+        const mid = id("M", ++M);
+        data.messages.push({ id: mid, patient_id: pid, received_date: addDays(today, -r.int(0, 6)), read: r.chance(0.25), subject, body });
+        truth.message_bucket[mid] = bucket;
+      }
+    }
+    return { data, truth, seed };
+  }
+
+  // ----------------------------------------------------- bundled demo clinic
+
+  const DEMO = {
+    patients: [
+      { id: "P001", name: "Amara Okafor", age: 47, condition: "perimenopause", provider: "Dr. L. Chen" },
+      { id: "P002", name: "Sofia Garcia", age: 31, condition: "endometriosis", provider: "Dr. R. Alvarez" },
+      { id: "P003", name: "Mei Tanaka", age: 29, condition: "prenatal care (second trimester)", provider: "Dr. A. Mensah" },
+      { id: "P004", name: "Priya Patel", age: 34, condition: "fertility evaluation", provider: "Dr. S. Iyer" },
+      { id: "P005", name: "Grace Mensah", age: 27, condition: "postpartum (6 weeks)", provider: "NP K. Brooks" },
+      { id: "P006", name: "Nadia Haddad", age: 24, condition: "PCOS", provider: "Dr. L. Chen" },
+      { id: "P007", name: "Rosa Silva", age: 56, condition: "menopause (on HRT)", provider: "Dr. R. Alvarez" },
+      { id: "P008", name: "Keisha Walsh", age: 36, condition: "prenatal care (third trimester)", provider: "Dr. A. Mensah" },
+      { id: "P009", name: "Lena Novak", age: 44, condition: "uterine fibroids", provider: "Dr. S. Iyer" },
+      { id: "P010", name: "Imani Diallo", age: 21, condition: "contraception management", provider: "NP K. Brooks" },
+    ],
+    lab_orders: [
+      { id: "L001", patient_id: "P001", test: "Hormone panel (FSH, LH, estradiol)", ordered_date: "2026-09-22", result_date: "", status: "pending" },
+      { id: "L002", patient_id: "P003", test: "Glucose challenge test", ordered_date: "2026-09-15", result_date: "", status: "pending" },
+      { id: "L003", patient_id: "P004", test: "AMH", ordered_date: "2026-09-20", result_date: "2026-09-24", status: "resulted" },
+      { id: "L004", patient_id: "P006", test: "HbA1c", ordered_date: "2026-09-26", result_date: "", status: "pending" },
+      { id: "L005", patient_id: "P009", test: "CBC", ordered_date: "2026-09-10", result_date: "", status: "pending" },
+      { id: "L006", patient_id: "P007", test: "DEXA scan", ordered_date: "2026-09-24", result_date: "", status: "pending" },
+      { id: "L007", patient_id: "P010", test: "Pap smear / HPV co-test", ordered_date: "2026-09-02", result_date: "2026-09-09", status: "resulted" },
+    ],
+    prescriptions: [
+      { id: "R001", patient_id: "P001", drug: "Micronized progesterone 100mg", ordered_date: "2026-09-26", filled_date: "", status: "ordered" },
+      { id: "R002", patient_id: "P005", drug: "Sertraline 50mg", ordered_date: "2026-09-20", filled_date: "", status: "ordered" },
+      { id: "R003", patient_id: "P004", drug: "Letrozole 2.5mg", ordered_date: "2026-09-25", filled_date: "2026-09-26", status: "filled" },
+      { id: "R004", patient_id: "P009", drug: "Ferrous sulfate 325mg", ordered_date: "2026-09-29", filled_date: "", status: "ordered" },
+      { id: "R005", patient_id: "P006", drug: "Metformin 500mg", ordered_date: "2026-09-12", filled_date: "2026-09-13", status: "filled" },
+    ],
+    appointments: [
+      { id: "A001", patient_id: "P002", date: "2026-09-10", type: "visit", note: "Follow up in 2 weeks to review endometriosis pain plan.", status: "completed" },
+      { id: "A002", patient_id: "P003", date: "2026-09-08", type: "visit", note: "Follow up in 4 weeks for anatomy scan review.", status: "completed" },
+      { id: "A003", patient_id: "P005", date: "2026-08-20", type: "telehealth", note: "Postpartum mood check. Follow-up in three weeks.", status: "completed" },
+      { id: "A004", patient_id: "P007", date: "2026-08-01", type: "visit", note: "Started HRT. Follow up in 6 weeks to check tolerance.", status: "completed" },
+      { id: "A005", patient_id: "P007", date: "2026-10-08", type: "visit", note: "", status: "scheduled" },
+      { id: "A006", patient_id: "P008", date: "2026-09-24", type: "visit", note: "Growth scan normal. Follow up in 1 week.", status: "completed" },
+      { id: "A007", patient_id: "P010", date: "2026-09-09", type: "visit", note: "Annual exam completed.", status: "completed" },
+      { id: "A008", patient_id: "P002", date: "2026-09-28", type: "visit", note: "", status: "cancelled" },
+    ],
+    messages: [
+      { id: "M001", patient_id: "P009", received_date: "2026-09-30", read: false, subject: "Bleeding", body: "The bleeding has become very heavy since last night and I feel faint." },
+      { id: "M002", patient_id: "P003", received_date: "2026-09-29", read: false, subject: "Cost question", body: "Hi, how much will my ultrasound cost with my insurance?" },
+      { id: "M003", patient_id: "P001", received_date: "2026-09-30", read: false, subject: "Results", body: "I saw my test results in the portal. Should I change anything before my visit?" },
+      { id: "M004", patient_id: "P010", received_date: "2026-09-28", read: false, subject: "Missed pills", body: "I missed two pills while traveling. I am back home now. Do I need backup?" },
+      { id: "M005", patient_id: "P006", received_date: "2026-10-01", read: false, subject: "Scheduling", body: "Can someone help me schedule the lab the doctor ordered?" },
+      { id: "M006", patient_id: "P008", received_date: "2026-10-01", read: false, subject: "quick question", body: "Baby hasn't moved much since yesterday, is that normal at 35 weeks?" },
+      { id: "M007", patient_id: "P005", received_date: "2026-09-27", read: false, subject: "Feeling low", body: "Still haven't picked up the sertraline, it was too expensive. Mood has been really low." },
+      { id: "M008", patient_id: "P004", received_date: "2026-09-25", read: true, subject: "Thanks", body: "Thank you, picked up the letrozole." },
+    ],
+  };
+
+  function demoClinic() { return JSON.parse(JSON.stringify(DEMO)); }
+
+  global.CareAgent = {
+    DEFAULT_TODAY, DEFAULT_MODEL, BUCKETS, TABLES, STAFF_MINUTES,
+    parseCSV, toCSV, normalizeDataset, loadFiles, parseDate, daysBetween, addDays,
+    followUpWeeks, detectDeadEnds, urgentSignals, ruleTriage, validateTriage, applyGuardrail,
+    claudeClient, runCycle, generateClinic, demoClinic, TRIAGE_SCHEMA, BRIEF_SCHEMA,
+  };
+})(typeof window !== "undefined" ? window : globalThis);
+
+  </script>
+
+  <script>
+  (function () {
+    "use strict";
+    const C = window.CareAgent;
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const KIND_LABEL = { stalled_lab: "Stalled lab", unfilled_rx: "Unfilled prescription", overdue_followup: "Overdue follow-up", unanswered_message: "Unanswered message", new_message: "New message" };
+    const BUCKET_LABEL = { urgent: "Urgent", clinician_review: "Clinician review", routine: "Routine", administrative: "Administrative" };
+    const SEV = { urgent: 0, high: 1, medium: 2, low: 3 };
+
+    // ------------------------------------------------------------ state
+    const app = {
+      state: null, label: "", sources: {}, warnings: [],
+      apiKey: "", model: C.DEFAULT_MODEL, useClaude: true,
+      triageByMsg: {}, queueFilter: "all", inboxFilter: "all", auditFilter: "all",
+      selectedMsg: null, selectedTicket: null, tableTab: "patients", running: false,
+    };
+
+    function today() { return $("clinicDate").value || C.DEFAULT_TODAY; }
+
+    function setClinic(data, label, warnings, sources, tickets) {
+      app.state = { data, tickets: tickets ? tickets.map(t => ({ ...t })) : [], audit: [], cycle: tickets ? Math.max(0, ...tickets.map(t => t.last_seen_cycle || 0)) : 0 };
+      app.label = label; app.warnings = warnings || []; app.sources = sources || {};
+      app.triageByMsg = {}; app.selectedMsg = null;
+      renderAll();
+    }
+
+    // ------------------------------------------------------------ helpers
+    function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2600); }
+    function download(name, text, type) {
+      const url = URL.createObjectURL(new Blob([text], { type: type || "application/json" }));
+      const a = document.createElement("a"); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    }
+    function initials(name) { return String(name || "?").split(/\s+/).map(w => w[0] || "").join("").slice(0, 2).toUpperCase(); }
+    function shortName(name) { const p = String(name || "").split(/\s+/); return p.length > 1 ? `${p[0]} ${p[p.length - 1][0]}.` : name; }
+    function daysLabel(d) { return d === null || d === undefined ? "" : d === 0 ? "today" : `${d} day${d === 1 ? "" : "s"}`; }
+    function aiMode() { return app.useClaude && app.apiKey ? "claude" : "rules"; }
+    function makeModel() { return aiMode() === "claude" ? C.claudeClient({ apiKey: app.apiKey, model: app.model }) : null; }
+
+    // ------------------------------------------------------------ navigation
+    const TITLES = {
+      command: () => [`${app.label} · ${fmtDate(today())}`, greeting()],
+      inbox: () => [`Safe triage · ${unreadCount()} unread`, "Messages that need a human"],
+      data: () => [`${app.label} · ${totalRecords()} records`, "Bring your clinic"],
+      audit: () => [`Traceable decisions · ${app.state.cycle} cycle${app.state.cycle === 1 ? "" : "s"}`, "What the agent did and why"],
+    };
+    let currentPage = "command";
+    function showPage(id) {
+      currentPage = id;
+      document.querySelectorAll(".page").forEach(p => p.classList.toggle("active", p.id === id));
+      document.querySelectorAll(".nav button").forEach(b => {
+        const on = b.dataset.page === id; b.classList.toggle("active", on);
+        on ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current");
+      });
+      renderTitle(); window.scrollTo(0, 0);
+    }
+    function renderTitle() { const [e, t] = TITLES[currentPage](); $("pageEyebrow").textContent = e; $("pageTitle").textContent = t; }
+    function fmtDate(iso) { const t = C.parseDate(iso); return t === null ? iso : new Date(t).toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", timeZone: "UTC" }); }
+    function greeting() { const h = new Date().getHours(); return `Good ${h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"}, care team`; }
+    function unreadCount() { return app.state.data.messages.filter(m => !m.read).length; }
+    function totalRecords() { return Object.keys(C.TABLES).reduce((n, t) => n + app.state.data[t].length, 0); }
+
+    // ------------------------------------------------------------ render
+    function renderAll() { renderMode(); renderMetrics(); renderQueue(); renderBrief(); renderInbox(); renderTables(); renderDownloads(); renderAudit(); renderTitle(); }
+
+    function renderMode() {
+      const claude = aiMode() === "claude";
+      $("modeDot").classList.toggle("off", !claude);
+      $("modeTitle").textContent = claude ? "Claude + guardrails" : "Rule-based mode";
+      $("modeText").textContent = claude ? `${app.model} triages messages; the urgent-phrase override and rule fallback run every cycle.` : "No API key set. Deterministic triage with the urgent-phrase override.";
+      $("aiBadge").textContent = claude ? "Claude on" : "rules only";
+      const ks = $("keyStatus");
+      ks.className = "status-line" + (app.apiKey ? " ok" : "");
+      if (!app.apiKey) ks.textContent = "No key set. The agent will use rule-based triage.";
+      else if (!app.useClaude) ks.textContent = "Key set, but Claude is switched off: rule-based triage will be used.";
+      else if (!ks.dataset.tested) ks.textContent = `Key set (…${app.apiKey.slice(-4)}). The agent will call ${app.model}.`;
+    }
+
+    function openTickets() { return app.state.tickets.filter(t => t.status === "open"); }
+
+    function renderMetrics() {
+      const r = app.state.lastReport;
+      $("navTickets").textContent = openTickets().length || "";
+      $("navInbox").textContent = unreadCount() || "";
+      if (!r) {
+        ["mDead", "mTriage", "mUrgent", "mSaved", "sChecks", "sOpen", "sEsc"].forEach(id => $(id).textContent = "–");
+        return;
+      }
+      const k = r.counts.by_kind;
+      $("mDead").textContent = r.counts.dead_ends;
+      $("mDeadSub").textContent = r.counts.dead_ends ? [["stalled_lab", "labs"], ["unfilled_rx", "Rx"], ["overdue_followup", "follow-ups"], ["unanswered_message", "messages"]].filter(([x]) => k[x]).map(([x, l]) => `${k[x]} ${l}`).join(" · ") : "No stalled care found";
+      $("mTriage").textContent = r.triage_summary.total;
+      $("mTriageSub").textContent = r.triage_summary.total ? `${r.triage_summary.by_claude} by Claude · ${r.triage_summary.by_rules} by rules` : "No unread messages";
+      $("mUrgent").textContent = r.triage_summary.urgent;
+      $("mUrgentSub").textContent = r.triage_summary.overrides ? `${r.triage_summary.overrides} raised by the safety override` : "Sent to the on-call clinician";
+      $("mSaved").textContent = r.staff_minutes_saved_estimate;
+      $("sChecks").textContent = Object.keys(C.TABLES).reduce((n, t) => n + r.counts[t], 0);
+      $("sOpen").textContent = openTickets().length;
+      $("sEsc").textContent = openTickets().filter(t => t.escalated).length;
+    }
+
+    const QUEUE_FILTERS = [["all", "All", () => true], ["urgent", "Urgent", t => t.severity === "urgent" || t.escalated],
+      ["labs", "Labs", t => t.kind === "stalled_lab"], ["medication", "Medication", t => t.kind === "unfilled_rx"],
+      ["followup", "Follow-up", t => t.kind === "overdue_followup"], ["messages", "Messages", t => t.kind === "unanswered_message" || t.kind === "new_message"]];
+
+    function renderQueue() {
+      const open = openTickets().sort((a, b) => SEV[a.severity] - SEV[b.severity] || (b.days || 0) - (a.days || 0));
+      $("queueFilters").innerHTML = QUEUE_FILTERS.map(([id, label, fn]) =>
+        `<button class="filter${app.queueFilter === id ? " active" : ""}" data-filter="${id}">${label} ${open.filter(fn).length}</button>`).join("");
+      const fn = QUEUE_FILTERS.find(f => f[0] === app.queueFilter)[2];
+      const rows = open.filter(fn);
+      if (!rows.length) {
+        $("queueList").innerHTML = `<div class="empty"><strong>${app.state.cycle ? "Nothing in this queue" : "No cycle run yet"}</strong>${app.state.cycle ? "No open tickets match this filter." : "Press Run agent cycle to scan the clinic."}</div>`;
+        return;
+      }
+      $("queueList").innerHTML = `<div class="case-list">${rows.map(t => `
+        <div class="case-row" tabindex="0" role="button" data-ticket="${esc(t.ticket_id)}">
+          <div class="case-avatar">${esc(initials(t.patient_name))}</div>
+          <div class="case-main"><strong>${esc(shortName(t.patient_name))}</strong><span>${esc(t.patient_id)} · ${esc(t.ticket_id)} · ${t.team === "clinical_team" ? "Clinical team" : "Admin team"}</span></div>
+          <div class="case-type"><strong>${esc(t.escalated ? "Urgent escalation" : KIND_LABEL[t.kind])}</strong><span>${esc(t.title)}</span></div>
+          <div class="case-age">${esc(daysLabel(t.days))}<b class="sev-${t.severity}">${t.escalated ? "Escalated" : esc(t.severity)}</b></div>
+          <div class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></div>
+        </div>`).join("")}</div>`;
+    }
+
+    function renderBrief() {
+      const r = app.state.lastReport;
+      if (!r) return;
+      const b = r.brief;
+      const first = openTickets().sort((a, c) => SEV[a.severity] - SEV[c.severity] || (c.days || 0) - (a.days || 0))[0];
+      $("briefMeta").textContent = `Cycle ${r.cycle} · ${new Date(r.generated_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} · ${b.source === "claude" ? "written by Claude" : "template (rules)"}`;
+      $("briefBody").innerHTML = `
+        <p class="brief-copy"><strong>${esc(b.headline)}</strong> ${esc(b.workload)}</p>
+        <p class="brief-sub">Top risks</p><ul class="brief-list">${b.top_risks.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        <p class="brief-sub">Next actions</p><ul class="brief-list">${b.next_actions.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        ${first ? `<div class="priority"><span class="priority-bar"></span><div><strong>First action · ${esc(shortName(first.patient_name))}</strong><span>${esc(first.title)}. ${esc(first.recommended_action)}</span></div></div>` : ""}`;
+    }
+
+    const INBOX_FILTERS = [["all", "All"], ["urgent", "Urgent"], ["clinician_review", "Clinician review"], ["routine", "Routine"], ["administrative", "Administrative"], ["override", "Overridden"], ["untriaged", "Not yet triaged"]];
+
+    function renderInbox() {
+      const pmap = Object.fromEntries(app.state.data.patients.map(p => [p.id, p]));
+      const msgs = app.state.data.messages.slice().sort((a, b) => {
+        const ta = app.triageByMsg[a.id], tb = app.triageByMsg[b.id];
+        const ra = ta ? C.BUCKETS.length - C.BUCKETS.indexOf(ta.bucket) : 9, rb = tb ? C.BUCKETS.length - C.BUCKETS.indexOf(tb.bucket) : 9;
+        return ra - rb || String(b.received_date).localeCompare(String(a.received_date));
+      });
+      const match = (m, f) => { const t = app.triageByMsg[m.id];
+        return f === "all" || (f === "untriaged" ? !t : f === "override" ? t && t.override : t && t.bucket === f); };
+      $("inboxFilters").innerHTML = INBOX_FILTERS.map(([id, label]) => `<button class="filter${app.inboxFilter === id ? " active" : ""}" data-filter="${id}">${label} ${msgs.filter(m => match(m, id)).length}</button>`).join("");
+      const urgent = msgs.filter(m => match(m, "urgent")).length;
+      $("inboxUrgentBadge").textContent = `${urgent} urgent`;
+      const list = msgs.filter(m => match(m, app.inboxFilter));
+      $("messageList").innerHTML = list.length ? list.map(m => {
+        const t = app.triageByMsg[m.id]; const p = pmap[m.patient_id];
+        return `<article class="message-card${app.selectedMsg === m.id ? " selected" : ""}" tabindex="0" role="button" data-msg="${esc(m.id)}">
+          <div class="message-meta"><strong>${esc(p ? shortName(p.name) : m.patient_id)} · ${esc(m.patient_id)}</strong><time>${esc(m.received_date)}</time></div>
+          <p><b>${esc(m.subject)}</b> — “${esc(String(m.body).slice(0, 160))}${String(m.body).length > 160 ? "…" : ""}”</p>
+          <div class="badges">${t ? `<span class="badge ${t.bucket}">${t.bucket === "urgent" ? "Escalate now" : BUCKET_LABEL[t.bucket]}</span>${t.override ? '<span class="badge urgent">Override</span>' : ""}<span class="badge ${t.source === "claude" ? "ai" : "neutral"}">${t.source === "claude" ? "Claude" : "Rules"}</span>` : `<span class="badge neutral">${m.read ? "Read" : "Unread · not triaged"}</span>`}</div>
+        </article>`; }).join("") : `<div class="empty"><strong>No messages</strong>Nothing matches this filter.</div>`;
+      renderMessageDetail();
+    }
+
+    function renderMessageDetail() {
+      const m = app.state.data.messages.find(x => x.id === app.selectedMsg);
+      if (!m) { $("detailSub").textContent = "Select a message"; $("messageDetail").innerHTML = '<p class="hint" style="margin:0">Pick a message to see how the agent triaged it.</p>'; return; }
+      const p = app.state.data.patients.find(x => x.id === m.patient_id);
+      const t = app.triageByMsg[m.id];
+      $("detailSub").textContent = `${p ? p.name : m.patient_id} · ${m.id}`;
+      const ticket = app.state.tickets.find(x => x.record_id === m.id && (x.kind === "unanswered_message" || x.kind === "new_message"));
+      $("messageDetail").innerHTML = `
+        <div class="quote"><b>${esc(m.subject)}</b>${esc(m.body)}</div>
+        ${t ? `<dl>
+          <dt>Final level</dt><dd><span class="badge ${t.bucket}">${BUCKET_LABEL[t.bucket]}</span></dd>
+          <dt>AI suggestion</dt><dd>${t.source === "claude" ? `${esc(BUCKET_LABEL[t.ai_bucket])} · confidence ${t.confidence.toFixed(2)}` : "Not used (rule-based triage)"}</dd>
+          <dt>Rule override</dt><dd>${t.override ? '<span class="sev-urgent">Triggered</span>' : "Not triggered"}</dd>
+          <dt>Urgent phrases</dt><dd>${t.urgent_signals.length ? esc(t.urgent_signals.join(", ")) : "None matched"}</dd>
+          <dt>Signals</dt><dd>${t.signal_phrases.length ? t.signal_phrases.map(s => `“${esc(s)}”`).join(", ") : "—"}</dd>
+          <dt>Next owner</dt><dd>${t.bucket === "urgent" ? "On-call clinician (escalated)" : t.team === "clinical_team" ? "Clinical team" : "Admin team"}${ticket ? ` · ${esc(ticket.ticket_id)}` : ""}</dd>
+          <dt>Next step</dt><dd>${esc(t.suggested_next_step)}</dd>
+          <dt>Patient</dt><dd>${p ? `${esc(p.age ?? "?")} · ${esc(p.condition)} · ${esc(p.provider)}` : "Unknown patient"}</dd>
+        </dl>
+        <div class="rationale"><b>${t.override ? "Why the agent escalated" : "Why"}</b><p>${esc(t.rationale)}</p></div>` :
+        `<p class="hint" style="margin:0">${m.read ? "This message was already read before the agent ran, so it was not triaged." : "Not triaged yet. Run a cycle."}</p>`}`;
+    }
+
+    function renderTables() {
+      const d = app.state.data;
+      $("tablesSub").textContent = `${app.label} · ` + Object.keys(C.TABLES).map(t => `${d[t].length} ${t.replace("_", " ")}`).join(" · ");
+      $("tableTabs").innerHTML = Object.keys(C.TABLES).map(t => `<button class="filter${app.tableTab === t ? " active" : ""}" data-table="${t}">${t} ${d[t].length}${app.sources[t] ? ` · ${app.sources[t]}` : ""}</button>`).join("");
+      const cols = C.TABLES[app.tableTab]; const rows = d[app.tableTab];
+      $("tableView").innerHTML = rows.length ? `<table><thead><tr>${cols.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>${rows.slice(0, 200).map(r => `<tr>${cols.map(c => `<td>${esc(r[c] === null ? "" : r[c])}</td>`).join("")}</tr>`).join("")}</tbody></table>${rows.length > 200 ? `<p class="hint" style="padding:0 12px 12px">Showing 200 of ${rows.length} rows.</p>` : ""}` : `<div class="empty">No rows in ${app.tableTab}.</div>`;
+      const w = $("dataWarnings");
+      w.hidden = !app.warnings.length;
+      w.innerHTML = app.warnings.slice(0, 100).map(x => `<li>${esc(x)}</li>`).join("");
+    }
+
+    const OUTPUTS = [
+      ["task_tickets.json", () => JSON.stringify(app.state.tickets, null, 2), "application/json"],
+      ["agent_audit_log.jsonl", () => app.state.audit.map(e => JSON.stringify(e)).join("\n") + (app.state.audit.length ? "\n" : ""), "application/x-ndjson"],
+      ["agent_report.json", () => JSON.stringify(app.state.lastReport || {}, null, 2), "application/json"],
+      ["clinic.json", () => JSON.stringify(app.state.data, null, 2), "application/json"],
+    ];
+    function renderDownloads() {
+      const has = !!app.state.lastReport;
+      $("downloads").innerHTML = OUTPUTS.map(([n], i) => `<button class="ghost-btn small-btn" data-dl="${i}"${i < 3 && !has ? " disabled" : ""}>${n}</button>`).join("") +
+        Object.keys(C.TABLES).map(t => `<button class="ghost-btn small-btn" data-dlt="${t}">${t}.${app.sources[t] === "csv" ? "csv" : "json"}</button>`).join("");
+    }
+
+    const AUDIT_FILTERS = [["all", "All"], ["perceive", "Perceive"], ["detect", "Detect"], ["reason", "Reason"], ["act", "Act"], ["brief", "Brief"], ["log", "Log"]];
+    const ALERT_EVENTS = new Set(["safety_override", "escalated"]);
+    const WARN_EVENTS = new Set(["fallback", "ai_disabled", "data_warnings"]);
+    function renderAudit() {
+      const a = app.state.audit;
+      $("auditFilters").innerHTML = AUDIT_FILTERS.map(([id, l]) => `<button class="filter${app.auditFilter === id ? " active" : ""}" data-filter="${id}">${l} ${id === "all" ? a.length : a.filter(e => e.phase === id).length}</button>`).join("");
+      const list = a.filter(e => app.auditFilter === "all" || e.phase === app.auditFilter).slice().reverse();
+      if (!list.length) { $("auditList").innerHTML = `<div class="empty" style="border:0"><strong>No entries yet</strong>Run a cycle to start the audit trail.</div>`; return; }
+      let html = "", cyc = null;
+      for (const e of list.slice(0, 600)) {
+        if (e.cycle !== cyc) { cyc = e.cycle; html += `<div class="audit-cycle">Cycle ${cyc}</div>`; }
+        const cls = ALERT_EVENTS.has(e.event) ? "alert" : WARN_EVENTS.has(e.event) ? "warn" : "";
+        html += `<div class="audit-item"><time class="audit-time">${esc(new Date(e.ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }))}</time><div class="audit-line"><span class="audit-dot ${cls}">${esc(e.phase[0].toUpperCase())}</span></div><div class="audit-copy"><strong>${esc(e.event.replace(/_/g, " "))}</strong><span>${esc(e.message)}</span></div></div>`;
+      }
+      $("auditList").innerHTML = html;
+    }
+
+    // ------------------------------------------------------------ ticket modal
+    function openTicket(id) {
+      const t = app.state.tickets.find(x => x.ticket_id === id); if (!t) return;
+      app.selectedTicket = id;
+      $("ticketTitle").textContent = `${t.ticket_id} · ${KIND_LABEL[t.kind]}`;
+      $("ticketSub").textContent = `${t.patient_name} · ${t.patient_id} · finding ${t.finding_id}`;
+      const tr = t.triage;
+      $("ticketBody").innerHTML = `<dl>
+        <dt>Summary</dt><dd>${esc(t.title)}</dd>
+        <dt>Detail</dt><dd>${esc(t.detail)}</dd>
+        <dt>Severity</dt><dd class="sev-${t.severity}" style="text-transform:uppercase">${esc(t.severity)}${t.escalated ? " · escalated to on-call" : ""}</dd>
+        <dt>Routed to</dt><dd>${t.team === "clinical_team" ? "Clinical team" : "Admin team"}</dd>
+        <dt>Action</dt><dd>${esc(t.recommended_action)}</dd>
+        ${tr ? `<dt>Triage</dt><dd><span class="badge ${tr.bucket}">${BUCKET_LABEL[tr.bucket]}</span> ${tr.source === "claude" ? `Claude said ${esc(BUCKET_LABEL[tr.ai_bucket])} (${tr.confidence.toFixed(2)})` : "rules"}${tr.override ? " · <span class='sev-urgent'>override</span>" : ""}</dd>` : ""}
+        <dt>Opened</dt><dd>Cycle ${t.opened_cycle} · last seen cycle ${t.last_seen_cycle} · ${esc(t.status)}</dd>
+      </dl>${tr ? `<div class="rationale"><b>Rationale</b><p>${esc(tr.rationale)}</p></div>` : ""}`;
+      $("resolveTicket").disabled = t.status !== "open";
+      $("ticketFoot").textContent = t.status === "open" ? "Resolving closes the ticket. If the problem is still there next cycle, a new ticket opens." : "Resolved.";
+      $("ticketModal").classList.add("open");
+    }
+
+    // ------------------------------------------------------------ run
+    const STEPS = [["perceive", "Perceive", "Load and validate the five tables"], ["detect", "Detect dead-ends", "Labs, prescriptions, follow-ups, messages"],
+      ["reason", "Triage with safety override", "Claude or rules, then urgent-phrase scan"], ["act", "Act", "Open/reuse tickets, route, mark read"], ["brief", "Brief & log", "Cycle brief, report, audit trail"]];
+    function resetSteps() {
+      $("runSteps").innerHTML = STEPS.map(([id, t, s], i) => `<div class="run-step" data-step="${id}"><span class="status-icon">${i + 1}</span><div><strong>${t}</strong><em>${s}</em></div><span class="st">waiting</span></div>`).join("");
+    }
+    function setStep(phase, status, info) {
+      const el = $("runSteps").querySelector(`[data-step="${phase}"]`); if (!el) return;
+      el.classList.remove("running", "done"); el.classList.add(status);
+      if (status === "done") el.querySelector(".status-icon").innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>';
+      el.querySelector(".st").textContent = status === "running" ? "running…" : (info || "done");
+    }
+    function openRunner() {
+      if (app.running) { $("runner").classList.add("open"); return; }
+      resetSteps();
+      $("runMode").value = aiMode() === "claude" ? `Claude (${app.model})` : "Rule-based (no API key)";
+      $("runMessage").textContent = `${app.label}: ${app.state.data.patients.length} patients, ${unreadCount()} unread messages. Clinic date ${today()}.`;
+      $("startRun").disabled = false; $("startRun").textContent = "Start cycle";
+      $("runner").classList.add("open");
+    }
+    async function startRun() {
+      if (app.running) return;
+      app.running = true;
+      const n = Math.max(1, Math.min(10, +$("cycles").value || 1));
+      $("startRun").disabled = true;
+      const model = makeModel();
+      let report = null;
+      try {
+        for (let i = 0; i < n; i++) {
+          resetSteps();
+          $("startRun").textContent = n > 1 ? `Cycle ${i + 1} of ${n}…` : "Running…";
+          report = await C.runCycle(app.state, { today: today(), model, warnings: i === 0 ? app.warnings : [], onStep: setStep });
+          for (const t of app.state.lastTriage) app.triageByMsg[t.message_id] = t;
+          renderAll();
+        }
+        $("runMessage").textContent = `Cycle ${report.cycle} done · ${report.counts.dead_ends} dead-ends · ${report.triage_summary.urgent} urgent · ${report.tickets.opened} new, ${report.tickets.reused} reused tickets` +
+          (report.reasoning.fallback_reason && model ? ` · Claude fallback: ${report.reasoning.fallback_reason}` : "");
+        $("startRun").textContent = "Run again";
+        if (model && report.reasoning.fallback_reason) toast("Claude was unavailable, so rule-based triage was used. See the audit trail.");
+      } catch (e) {
+        console.error(e);
+        $("runMessage").textContent = `Cycle failed: ${e.message}`;
+        $("startRun").textContent = "Retry";
+      } finally {
+        app.running = false; $("startRun").disabled = false;
+      }
+    }
+
+    // ------------------------------------------------------------ data loading
+    async function readFiles(fileList) {
+      const files = await Promise.all([...fileList].filter(f => /\.(json|csv)$/i.test(f.name)).map(f => f.text().then(text => ({ name: f.webkitRelativePath || f.name, text }))));
+      if (!files.length) { toast("No .json or .csv files found."); return; }
+      const res = C.loadFiles(files);
+      setClinic(res.data, "Uploaded clinic", res.warnings, res.sources, res.tickets);
+      const st = $("dataStatus");
+      st.className = "status-line ok";
+      st.textContent = `Loaded ${files.length} file(s): ` + Object.keys(C.TABLES).map(t => `${res.data[t].length} ${t}`).join(", ") +
+        (res.tickets ? `; ${res.tickets.length} existing tickets` : "") + (res.warnings.length ? ` · ${res.warnings.length} warning(s)` : "");
+      toast("Clinic data loaded. Run a cycle when ready.");
+    }
+
+    // ------------------------------------------------------------ events
+    document.querySelectorAll(".nav button").forEach(b => b.addEventListener("click", () => showPage(b.dataset.page)));
+    document.querySelectorAll("[data-open-page]").forEach(b => b.addEventListener("click", () => showPage(b.dataset.openPage)));
+    document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", () => $(b.dataset.close).classList.remove("open")));
+    document.querySelectorAll(".overlay").forEach(o => o.addEventListener("click", e => { if (e.target === o) o.classList.remove("open"); }));
+    document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".overlay.open").forEach(o => o.classList.remove("open")); });
+
+    $("openRunner").addEventListener("click", openRunner);
+    $("startRun").addEventListener("click", startRun);
+    $("queueFilters").addEventListener("click", e => { const b = e.target.closest("[data-filter]"); if (b) { app.queueFilter = b.dataset.filter; renderQueue(); } });
+    $("queueList").addEventListener("click", e => { const r = e.target.closest("[data-ticket]"); if (r) openTicket(r.dataset.ticket); });
+    $("queueList").addEventListener("keydown", e => { const r = e.target.closest("[data-ticket]"); if (r && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openTicket(r.dataset.ticket); } });
+    $("resolveTicket").addEventListener("click", () => {
+      const t = app.state.tickets.find(x => x.ticket_id === app.selectedTicket); if (!t) return;
+      t.status = "resolved"; t.resolved_at = new Date().toISOString();
+      app.state.audit.push({ ts: t.resolved_at, cycle: app.state.cycle, phase: "act", event: "ticket_resolved", message: `${t.ticket_id} (${t.finding_id}) marked resolved by staff.` });
+      $("ticketModal").classList.remove("open"); renderAll(); toast(`${t.ticket_id} resolved.`);
+    });
+    $("inboxFilters").addEventListener("click", e => { const b = e.target.closest("[data-filter]"); if (b) { app.inboxFilter = b.dataset.filter; renderInbox(); } });
+    $("messageList").addEventListener("click", e => { const c = e.target.closest("[data-msg]"); if (c) { app.selectedMsg = c.dataset.msg; renderInbox(); } });
+    $("messageList").addEventListener("keydown", e => { const c = e.target.closest("[data-msg]"); if (c && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); app.selectedMsg = c.dataset.msg; renderInbox(); } });
+    $("auditFilters").addEventListener("click", e => { const b = e.target.closest("[data-filter]"); if (b) { app.auditFilter = b.dataset.filter; renderAudit(); } });
+    $("tableTabs").addEventListener("click", e => { const b = e.target.closest("[data-table]"); if (b) { app.tableTab = b.dataset.table; renderTables(); } });
+    $("downloads").addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      if (b.dataset.dl !== undefined) { const [n, f, t] = OUTPUTS[+b.dataset.dl]; download(n, f(), t); }
+      if (b.dataset.dlt) { const t = b.dataset.dlt; const csv = app.sources[t] === "csv";
+        download(`${t}.${csv ? "csv" : "json"}`, csv ? C.toCSV(app.state.data[t], C.TABLES[t]) : JSON.stringify(app.state.data[t], null, 2), csv ? "text/csv" : "application/json"); }
+    });
+    $("dlAudit").addEventListener("click", () => { const [n, f, t] = OUTPUTS[1]; download(n, f(), t); });
+    $("downloadAllTop").addEventListener("click", () => {
+      if (!app.state.lastReport) { toast("Run a cycle first."); return; }
+      OUTPUTS.slice(0, 3).forEach(([n, f, t], i) => setTimeout(() => download(n, f(), t), i * 300));
+    });
+
+    $("loadDemo").addEventListener("click", () => { setClinic(C.demoClinic(), "Demo clinic", [], {}); $("clinicDate").value = C.DEFAULT_TODAY; $("dataStatus").className = "status-line"; $("dataStatus").textContent = "Demo clinic loaded (10 patients)."; });
+    $("genRandom").addEventListener("click", () => {
+      const seed = Math.max(1, +$("seed").value || 1); const size = Math.max(1, Math.min(2000, +$("size").value || 36));
+      const { data } = C.generateClinic(seed, today(), size);
+      setClinic(data, `Random clinic #${seed}`, [], {});
+      $("dataStatus").className = "status-line ok";
+      $("dataStatus").textContent = `Generated random clinic (seed ${seed}): ${data.patients.length} patients, ${data.messages.length} messages, relative to ${today()}.`;
+      $("seed").value = seed + 1;
+    });
+    $("loadEmpty").addEventListener("click", () => { setClinic(C.normalizeDataset({}).data, "Empty clinic", [], {}); $("dataStatus").className = "status-line"; $("dataStatus").textContent = "Empty clinic loaded."; });
+    $("clinicDate").addEventListener("change", renderTitle);
+    $("fileInput").addEventListener("change", e => { readFiles(e.target.files); e.target.value = ""; });
+    $("folderInput").addEventListener("change", e => { readFiles(e.target.files); e.target.value = ""; });
+    const dz = $("dropZone");
+    ["dragenter", "dragover"].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add("over"); }));
+    ["dragleave", "drop"].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove("over"); }));
+    dz.addEventListener("drop", e => readFiles(e.dataTransfer.files));
+    $("formatLink").addEventListener("click", e => { e.preventDefault(); $("formatModal").classList.add("open"); });
+
+    $("saveKey").addEventListener("click", () => {
+      app.apiKey = $("apiKey").value.trim(); app.model = $("modelName").value.trim() || C.DEFAULT_MODEL;
+      $("apiKey").value = ""; delete $("keyStatus").dataset.tested; renderMode();
+      toast(app.apiKey ? "Key set for this tab." : "No key entered.");
+    });
+    $("clearKey").addEventListener("click", () => { app.apiKey = ""; $("apiKey").value = ""; delete $("keyStatus").dataset.tested; renderMode(); toast("Key cleared from memory."); });
+    $("useClaude").addEventListener("change", e => { app.useClaude = e.target.checked; renderMode(); });
+    $("modelName").addEventListener("change", e => { app.model = e.target.value.trim() || C.DEFAULT_MODEL; renderMode(); });
+    $("testKey").addEventListener("click", async () => {
+      const key = $("apiKey").value.trim() || app.apiKey;
+      const ks = $("keyStatus");
+      if (!key) { ks.className = "status-line bad"; ks.textContent = "Enter a key first."; return; }
+      ks.className = "status-line"; ks.textContent = "Testing…";
+      try {
+        const client = C.claudeClient({ apiKey: key, model: $("modelName").value.trim() || C.DEFAULT_MODEL, timeoutMs: 45000 });
+        const r = C.validateTriage(await client.triage({ subject: "Refill", body: "Can I get a refill of my prenatal vitamins?", received_date: today() }, null));
+        if (!r) throw new Error("unexpected response shape");
+        ks.className = "status-line ok"; ks.dataset.tested = "1";
+        ks.textContent = `Connected. Test message classified as "${r.bucket}" (${r.confidence.toFixed(2)}).`;
+      } catch (e) { ks.className = "status-line bad"; ks.dataset.tested = "1"; ks.textContent = `Connection failed: ${e.message}. The agent will fall back to rules.`; }
+    });
+
+    // ------------------------------------------------------------ boot
+    setClinic(C.demoClinic(), "Demo clinic", [], {});
+  })();
+  </script>
+</body>
+</html>

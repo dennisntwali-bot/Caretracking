@@ -1,6 +1,2 @@
-__pycache__/
-*.pyc
-.pytest_cache/
-*.egg-info/
-.venv/
-*.json
+node_modules/
+.DS_Store

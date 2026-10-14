@@ -1,101 +1,116 @@
-# CareTracking agent
+# Care Tracker Agent
 
-An AI agent that watches a (synthetic) hospital: it reads vital signs, labs and
-medication records, scores every patient, spots deterioration and missed care,
-raises alerts, and writes a handover for the nurse in charge.
+A care-operations AI agent for a women's health clinic ("Women's Wellness Throughout
+the Reproductive Continuum"). It finds patients whose care has stalled, triages
+patient messages with Claude, opens one ticket per problem, and keeps a full audit trail.
 
-All patient data is randomly generated. No real patient information is used.
+All of it is one file, **`index.html`**. Open it in a browser (or deploy it to any
+static host, such as Vercel) and the agent runs in that tab. There's no backend, and no
+data leaves the tab except the Claude API calls you turn on.
 
-## Quick start
+## Use it
+
+1. Open `index.html`. The demo clinic is already loaded.
+2. Press **Run agent cycle**. Without an API key it uses rule-based reasoning.
+3. To use Claude, open **Data**, paste an Anthropic API key and choose **Use this key**.
+   The key is held in memory only, never stored, and **Clear key** wipes it.
+   Default model: `claude-opus-5-5` (you can change it in the Model field).
+4. On the **Data** page you can also generate a random clinic (seeded), load an empty
+   clinic, or upload your own tables (files, a folder, or drag and drop).
+5. Download `task_tickets.json`, `agent_audit_log.jsonl`, `agent_report.json` and the
+   updated tables. Upload `task_tickets.json` again with your data next time, and open
+   tickets won't be duplicated.
+
+Sample data: `sample-data/demo-csv/` (the demo as CSV) and `sample-data/random-clinic-seed7.json`
+(a 40-patient random clinic as a single bundle).
+
+## Data format
+
+Five tables, each as JSON (a list of objects) or CSV (a header row). If both exist,
+JSON is used. A single `clinic.json` holding all five tables also works. Extra columns
+are ignored, and dates are ISO `YYYY-MM-DD`.
+
+| table | columns |
+|---|---|
+| patients | id, name, age, condition, provider |
+| lab_orders | id, patient_id, test, ordered_date, result_date, status (`pending`/`resulted`) |
+| prescriptions | id, patient_id, drug, ordered_date, filled_date, status (`ordered`/`filled`) |
+| appointments | id, patient_id, date, type, note, status (`completed`/`scheduled`/`cancelled`) |
+| messages | id, patient_id, received_date, read (`true`/`false`), subject, body |
+
+"Today" defaults to 2026-10-01 and can be changed on the Data page. Messy input
+doesn't crash the agent: a BOM, CRLF line endings, mixed-case headers or statuses, duplicate
+or missing ids, bad dates and unknown patient ids all become warnings in the audit log.
+
+## What one cycle does
+
+**Perceive.** The agent loads and validates the five tables.
+
+**Detect** dead-ends with exact rules:
+
+| finding id | rule | severity |
+|---|---|---|
+| `stalled-lab:L001` | pending, no result, ordered more than 7 days ago | high |
+| `unfilled-rx:R001` | ordered, not filled, more than 3 days old | medium (high after 7 days) |
+| `overdue-followup:A001` | a completed note says "follow up in N weeks" (digits or one to twelve), that date has passed, and the patient has no scheduled appointment today or later | medium |
+| `unanswered-message:M001` | unread and received more than 1 day ago | taken from triage |
+
+**Reason (where Claude comes in).**
+- Every unread message goes to Claude with structured JSON output
+  (`output_config.format`). Claude returns a `bucket` (administrative, routine,
+  clinician_review or urgent), a `confidence`, the `signal_phrases`, a one-line
+  `rationale` and a `suggested_next_step`.
+- **Safety rule.** After Claude answers, a fixed scan looks for urgent phrases: heavy
+  bleeding, severe pain, chest pain, trouble breathing, fainting, unconscious, 911,
+  going to urgent care or the ER, reduced fetal movement, waters breaking, severe headache
+  or blurred vision, self-harm, seizure and high fever. Any match makes the message
+  urgent. Claude can escalate a message, but it can never lower one.
+- If there's no key, or the API errors, refuses, times out or returns invalid JSON, the
+  message falls back to rule-based triage with the same four buckets. A 401 or 403
+  turns Claude off for the rest of the cycle. The cycle never crashes.
+- Claude also writes the **cycle brief** (headline, workload, top risks, next actions).
+  If it can't, a built-in template writes the brief instead.
+
+**Act.**
+- The agent opens one ticket per finding, keyed by a stable finding id, and checks open
+  tickets first so it never creates duplicates.
+- Fresh unread messages get a `new-message:` ticket.
+- Administrative and routine messages go to `admin_team`; clinician_review and urgent go
+  to `clinical_team`. Urgent messages are also escalated to the on-call clinician.
+- Triaged messages are marked read.
+
+**Log.** Every step is written to `agent_audit_log.jsonl` with a timestamp and a
+plain-language message. `agent_report.json` holds the counts, severity breakdown,
+triage summary, tickets opened and reused, the brief, and an estimate of staff-minutes
+saved (3 min per triage, 6 per chart check, 10 per brief).
+
+The Claude call is a plain `fetch` to `https://api.anthropic.com/v1/messages` with the
+`anthropic-dangerous-direct-browser-access` header, which allows a browser to call the
+API directly. It also sends `fallbacks: "default"`, so if Claude declines a request, the
+server retries it on another model. If an account doesn't support that option, the
+agent retries once without it.
+
+## Tests
 
 ```bash
-pip install -e ".[dev]"
-
-python -m caretracking snapshot                   # see the generated hospital
-python -m caretracking run                        # one review
-python -m caretracking run --cycles 6 --interval 60 --verbose   # watch it over 6 simulated hours
-python -m caretracking export hospital.json       # dump the dataset
-pytest
+node --test tests/acceptance.test.mjs             # agent logic, loaded straight from index.html
+NODE_PATH=$(npm root -g) node tests/ui.smoke.mjs   # headless Chromium run of the page (needs playwright)
 ```
 
-With `ANTHROPIC_API_KEY` set, `run` uses Claude as the agent. Without a key, or with
-`--offline`, it uses a deterministic rule engine that calls the same tools.
+The acceptance suite covers every criterion in the brief:
 
-## How it fits together
+1. **Detector precision and recall are 1.0** against an independent ground-truth
+   implementation (`tests/ground-truth.mjs`) on 10 random clinics, plus boundary cases.
+2. **Urgent recall is 1.0** with a mock model that always answers "routine". Every
+   urgent message is still escalated.
+3. **The second cycle opens 0 new tickets**, including when tickets are carried over
+   from a previous session.
+4. **JSON and CSV inputs give identical results**, including quoted commas and newlines.
+5. **Empty and all-healthy clinics** produce zero findings and don't crash.
+6. **A missing or bad key** (401, network error, invalid JSON, refusal, 529) falls back
+   cleanly to rules, and the cycle completes.
 
-```
- hospital.py          clinical.py            tools.py                agent.py
- ───────────          ───────────            ────────                ────────
- random patients  →   NEWS2, qSOFA,      →   get_ward_overview   ←→  ClaudeCareAgent
- vitals over time     6h trend, overdue      get_patient_details      (Claude decides,
- meds / labs          obs and doses,         get_vitals_history        explains, writes
- admissions,          abnormal labs          get_care_gaps             the handover)
- discharges                                  list_alerts
- (seeded clock)                              raise_alert         ←→  RuleBasedCareAgent
-                                                                      (offline fallback)
-```
+The UI test checks a rules run, a Claude run with the API mocked at the network layer, a
+bad key, CSV upload, downloads, ticket resolving, and that the page fits a 390px phone screen.
 
-### 1. Synthetic data (`hospital.py`)
-- 38 beds over 4 wards (Medical, Surgical, Cardiology, Respiratory), about 85% occupied.
-- Each patient gets demographics, a ward-appropriate diagnosis, comorbidities and
-  allergies, and 2-5 medication orders (some of them time-critical, such as IV
-  antibiotics, insulin and enoxaparin).
-- A hidden **trajectory** (stable, improving or deteriorating) drives a severity
-  value that moves the vitals: heart rate up, respiratory rate up, blood pressure
-  down, fever, falling SpO2, and confusion when severe. Labs (lactate, WBC, CRP,
-  creatinine, K+, Hb) follow the same severity value.
-- The clock advances in 15-minute steps. Nurses take observations on the NEWS2
-  schedule, but some sets come late. About 5% of doses are missed. Patients are
-  admitted and discharged, and very sick patients eventually get treated and recover.
-- Everything is seeded (`--seed`), so a run can be reproduced exactly.
-
-### 2. Clinical scoring (`clinical.py`)
-These are deterministic and unit-tested. The AI reads these numbers rather than
-inventing its own:
-- **NEWS2** (Royal College of Physicians, 2017), including SpO2 scale 2 for
-  hypercapnic (COPD) patients. Gives the risk band and the required observation interval.
-- **qSOFA** sepsis screen.
-- The **6-hour NEWS2 trend**, observations overdue against the NEWS2 schedule,
-  overdue doses in the last 12 hours, and abnormal latest labs.
-
-### 3. Where the AI comes in (`agent.py`)
-The scoring finds the numbers. The AI does the judgement work around them:
-- **Triage across the whole hospital.** It decides who to look at closely,
-  drilling into details and vitals history only where the overview suggests a problem.
-- **Context.** It weighs a score against the patient: NEWS2 5 in a 90-year-old
-  with a falling BP is different from NEWS2 5 in a COPD patient on their usual
-  oxygen. A missed antibiotic in a patient with a positive sepsis screen matters
-  more than a late paracetamol.
-- **Escalation.** It raises alerts with the evidence and a concrete bedside
-  action. Before each alert it checks the open alerts so it doesn't repeat them,
-  and re-raises only when a patient gets worse. The tool layer also enforces this.
-- **Handover.** It writes a prioritised plain-language summary for the nurse in charge.
-
-The agent is a tool-use loop on the Claude API (`claude-opus-5-5`, adaptive
-thinking, `effort` adjustable with `--effort`). It has server-side refusal
-fallback turned on (`fallbacks: "default"`). Tool errors, such as an unknown
-patient ID, go back to the model as `is_error` results, so the run doesn't crash.
-
-`RuleBasedCareAgent` codifies the NEWS2 escalation thresholds. It's useful as an
-offline fallback and as a baseline to compare the LLM's alerts against.
-
-## Running it continuously
-
-`run --cycles N --interval M` advances the simulated clock by M minutes between
-reviews. To run it as a long-lived service, call `agent.review(hospital)` on a
-schedule and feed `hospital.advance()` from a real data source instead of the simulator:
-
-```python
-from caretracking import ClaudeCareAgent, Hospital
-
-h = Hospital.generate(seed=42)
-agent = ClaudeCareAgent()
-while True:
-    h.advance(minutes=60)
-    report = agent.review(h)
-    print(report.summary)
-```
-
-## Disclaimer
-This is a demo of decision support using synthetic data. It is not a medical
-device, and it must not be used for real patient care.
+This is decision support on synthetic data, not a medical device.

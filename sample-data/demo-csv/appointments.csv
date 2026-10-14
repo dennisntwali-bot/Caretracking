@@ -1,0 +1,9 @@
+id,patient_id,date,type,note,status
+A001,P002,2026-09-10,visit,Follow up in 2 weeks to review endometriosis pain plan.,completed
+A002,P003,2026-09-08,visit,Follow up in 4 weeks for anatomy scan review.,completed
+A003,P005,2026-08-20,telehealth,Postpartum mood check. Follow-up in three weeks.,completed
+A004,P007,2026-08-01,visit,Started HRT. Follow up in 6 weeks to check tolerance.,completed
+A005,P007,2026-10-08,visit,,scheduled
+A006,P008,2026-09-24,visit,Growth scan normal. Follow up in 1 week.,completed
+A007,P010,2026-09-09,visit,Annual exam completed.,completed
+A008,P002,2026-09-28,visit,,cancelled
