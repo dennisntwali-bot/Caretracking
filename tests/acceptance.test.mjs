@@ -290,3 +290,20 @@ test("report and audit log have the required content", async () => {
   for (const e of s.audit) { assert.ok(!isNaN(Date.parse(e.ts))); assert.equal(typeof e.message, "string"); }
   assert.ok(s.tickets.every(t => /^(stalled-lab|unfilled-rx|overdue-followup|unanswered-message|new-message):/.test(t.finding_id)));
 });
+
+test("works with a postMessage-style fetch relay that cannot clone AbortSignal", async () => {
+  const relay = async (url, init) => {
+    if (init.signal !== undefined) throw new DOMException("AbortSignal object could not be cloned.", "DataCloneError");
+    return { ok: true, status: 200, json: async () => ({ stop_reason: "end_turn", content: [{ type: "text", text: '{"bucket":"routine","confidence":0.8,"signal_phrases":[],"rationale":"r","suggested_next_step":"s"}' }] }) };
+  };
+  const r = await C.claudeClient({ apiKey: "k", fetchImpl: relay }).triage({ subject: "Refill", body: "refill please" }, null);
+  assert.equal(r.bucket, "routine");
+});
+
+test("a hung request times out cleanly and the cycle falls back", async () => {
+  const hang = () => new Promise(() => {});
+  const s = state(C.demoClinic());
+  const r = await C.runCycle(s, { today: TODAY, model: C.claudeClient({ apiKey: "k", fetchImpl: hang, timeoutMs: 30 }) });
+  assert.equal(r.triage_summary.by_rules, 7);
+  assert.ok(s.audit.some(e => /timed out/.test(e.message)));
+});

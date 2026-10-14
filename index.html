@@ -884,18 +884,22 @@ naming patients and why. next_actions: up to 5 concrete actions with the owning 
         body.fallbacks = "default";
         headers["anthropic-beta"] = "server-side-fallback-2026-07-01";
       }
-      const ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
-      const timer = ctrl ? setTimeout(() => ctrl.abort(), timeoutMs) : null;
-      let res, json;
+      // Timeout via Promise.race rather than an AbortSignal: some embedded
+      // previews replace fetch with a postMessage relay that cannot clone signals.
+      let timer, res, json;
+      const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new ClaudeError("request timed out", 0)), timeoutMs);
+      });
       try {
-        res = await f("https://api.anthropic.com/v1/messages", {
-          method: "POST", headers, body: JSON.stringify(body), signal: ctrl ? ctrl.signal : undefined,
-        });
-        json = await res.json().catch(() => null);
+        res = await Promise.race([f("https://api.anthropic.com/v1/messages", {
+          method: "POST", headers, body: JSON.stringify(body),
+        }), timeout]);
+        json = await Promise.race([res.json().catch(() => null), timeout]);
       } catch (e) {
-        throw new ClaudeError(e.name === "AbortError" ? "request timed out" : `network error: ${e.message}`, 0);
+        if (e instanceof ClaudeError) throw e;
+        throw new ClaudeError(`network error: ${e.message}. If this page is open inside an app preview, open index.html directly in Chrome, Edge, Safari or Firefox`, 0);
       } finally {
-        if (timer) clearTimeout(timer);
+        clearTimeout(timer);
       }
       if (!res.ok) {
         const msg = (json && json.error && json.error.message) || `HTTP ${res.status}`;
