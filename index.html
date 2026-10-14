@@ -475,6 +475,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <!-- Optional, never committed: config.local.js next to this file can preload an API key (see config.example.js). -->
+  <script src="config.local.js"></script>
   <script id="agent-core">
 /* Care Tracking Agent - core logic (no DOM).
  *
@@ -1720,7 +1722,14 @@ naming patients and why. next_actions: up to 5 concrete actions with the owning 
     });
 
     // ------------------------------------------------------------ boot
+    const cfg = window.CARE_TRACKER_CONFIG || {};
+    if (typeof cfg.model === "string" && cfg.model.trim()) { app.model = cfg.model.trim(); $("modelName").value = app.model; }
+    if (typeof cfg.apiKey === "string" && cfg.apiKey.trim()) {
+      app.apiKey = cfg.apiKey.trim();
+      delete window.CARE_TRACKER_CONFIG;
+    }
     setClinic(C.demoClinic(), "Demo clinic", [], {});
+    if (app.apiKey) $("keyStatus").textContent = `Key loaded from config.local.js (…${app.apiKey.slice(-4)}). The agent will call ${app.model}.`;
   })();
   </script>
 </body>

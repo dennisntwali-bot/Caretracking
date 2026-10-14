@@ -15,6 +15,10 @@ data leaves the tab except the Claude API calls you turn on.
 3. To use Claude, open **Data**, paste an Anthropic API key and choose **Use this key**.
    The key is held in memory only, never stored, and **Clear key** wipes it.
    Default model: `claude-opus-5-5` (you can change it in the Model field).
+   To skip pasting each time on your own computer, copy `config.example.js` to
+   `config.local.js` next to `index.html` and put your key in it. The page loads it
+   automatically. `config.local.js` is git-ignored: never commit it or upload it to a
+   public host such as Vercel.
 4. On the **Data** page you can also generate a random clinic (seeded), load an empty
    clinic, or upload your own tables (files, a folder, or drag and drop).
 5. Download `task_tickets.json`, `agent_audit_log.jsonl`, `agent_report.json` and the
